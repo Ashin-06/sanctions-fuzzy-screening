@@ -726,9 +726,12 @@ class SanctionsMatcher:
         best_score = best.final_score if best else 0.0
         is_hit = best_score >= self.alert_threshold
 
+        # A strong name match that only falls below the threshold because of DOB, country or ID
+        # goes to an analyst: those fields come from the payer, and a listed person can misstate them.
+        strong_name = any(c.raw_name_score >= self.alert_threshold for c in candidates)
         if best_score >= self.alert_threshold:
             decision = "BLOCK"
-        elif best_score >= 0.60:
+        elif best_score >= 0.60 or strong_name:
             decision = "REVIEW"
         else:
             decision = "CLEAR"

@@ -96,3 +96,9 @@ def test_people_are_not_matched_against_listed_companies(pipeline) -> None:
     # "nair" and "noor" share the phonetic code "nr"; a person must not hit "Al Noor Trading LLC"
     res = screen(pipeline, "Smt. Priya Darshini Nair", entity_type="individual", dob="1990-11-04", country="IN")
     assert res["decision"] == "CLEAR"
+
+
+def test_listed_name_with_conflicting_details_goes_to_review(pipeline) -> None:
+    res = screen(pipeline, "Tariq Al-Rashid", entity_type="individual", dob="1994-11-23", country="JO")
+    assert res["decision"] == "REVIEW"
+    assert screen(pipeline, "John Smith", entity_type="individual", dob="1994-11-23")["decision"] == "CLEAR"
