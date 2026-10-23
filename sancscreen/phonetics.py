@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import re
 import unicodedata
+from functools import lru_cache
 from typing import Dict, List, Set, Tuple
 
 # ---------------------------------------------------------------------------
@@ -424,6 +425,7 @@ def _transliterate_cyrillic_word(word: str) -> str:
     return "".join(_CYRILLIC_MAP.get(c, c) for c in low)
 
 
+@lru_cache(maxsize=200_000)  # pure, and hot when screening a full list
 def transliterate(text: str) -> str:
     """
     Deterministically transliterate Multi-Script (Devanagari, Arabic, Cyrillic, Latin)
@@ -512,6 +514,7 @@ _DIALECT_CANONICAL_MAP: Dict[str, str] = {
 }
 
 
+@lru_cache(maxsize=200_000)
 def phonetic_code(token: str) -> str:
     """
     Generate a deterministic Consonant Phonetic Code for a single token.
