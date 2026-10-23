@@ -48,7 +48,14 @@ class SanctionsScreeningPipeline:
         """Screen a single wire transfer party against both the SDN watchlist and UBO graph."""
         t0 = time.perf_counter()
         name_res = self.matcher.screen(query, top_k=top_k)
-        ubo_res: Optional[UBOResult] = self.ubo_engine.evaluate_entity(query.name)
+        # Ownership screening is for companies. Sending a person's name through it resolved
+        # e.g. "Tariq Al-Rashid" to the listed individual's graph node and blocked every
+        # homonym, bypassing the name matcher's DOB and country checks.
+        ubo_res: Optional[UBOResult] = None
+        if (query.entity_type or "").lower() != "individual":
+            node_id = self.ubo_engine.resolve_node_id(query.name)
+            if node_id is not None and self.ubo_engine.nodes[node_id].node_type != "individual":
+                ubo_res = self.ubo_engine.evaluate_entity(node_id)
 
         name_hit = bool(name_res["is_hit"])
         ubo_blocked = bool(ubo_res is not None and ubo_res.ofac_50_rule_blocked)

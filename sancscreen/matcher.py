@@ -404,6 +404,13 @@ def _extract_year(dob: Optional[str]) -> Optional[int]:
     return int(m.group(1)) if m else None
 
 
+def types_compatible(query_type: Optional[str], entry_type: str) -> bool:
+    """A person is only compared with listed persons, a company with listed entities/vessels."""
+    if not query_type:
+        return True
+    return (query_type.lower() == "individual") == (entry_type.lower() == "individual")
+
+
 class SanctionsMatcher:
     """
     Order-Invariant IDF-Weighted Bipartite Token Matcher with Secondary Identifier Resolution.
@@ -707,7 +714,11 @@ class SanctionsMatcher:
         Screen a query against the entire SDN watchlist and return ranked candidates
         plus decision (`BLOCK`, `REVIEW`, or `CLEAR`).
         """
-        candidates = [self.match_entry(query, entry) for entry in self.watchlist]
+        candidates = [
+            self.match_entry(query, entry)
+            for entry in self.watchlist
+            if types_compatible(query.entity_type, entry.entity_type)
+        ]
         candidates.sort(key=lambda c: c.final_score, reverse=True)
         top_candidates = candidates[:top_k]
 

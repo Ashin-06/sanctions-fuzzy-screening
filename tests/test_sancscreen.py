@@ -81,3 +81,18 @@ def test_api_endpoints() -> None:
     assert r.status_code == 200 and r.json()["decision"] == "BLOCK"
     assert client.post("/ubo/check", json={"entity": "UBO-SHELL-01"}).json()["ofac_50_rule_blocked"] is True
     assert client.post("/ubo/check", json={"entity": "Nobody Ltd"}).status_code == 404
+
+
+def test_people_are_not_screened_through_the_ownership_graph(pipeline) -> None:
+    # A homonym born 26 years after the listed person, different country and passport.
+    # The ownership lookup used to resolve the name to the SDN's own graph node and block.
+    res = screen(pipeline, "Tariq Al-Rashid", entity_type="individual", dob="1994-11-23",
+                 country="JO", identifier="JO4410928")
+    assert res["hit_source"] != "UBO_50_RULE" and res["ubo_assessment"] is None
+    assert res["decision"] != "BLOCK"
+
+
+def test_people_are_not_matched_against_listed_companies(pipeline) -> None:
+    # "nair" and "noor" share the phonetic code "nr"; a person must not hit "Al Noor Trading LLC"
+    res = screen(pipeline, "Smt. Priya Darshini Nair", entity_type="individual", dob="1990-11-04", country="IN")
+    assert res["decision"] == "CLEAR"
