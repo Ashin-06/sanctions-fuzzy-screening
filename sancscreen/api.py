@@ -5,7 +5,7 @@ Endpoints:
 - GET  /           : Interactive Sanctions & UBO Screening Web Console (HTML)
 - GET  /health     : Service health check
 - POST /screen     : Screen a SWIFT / cross-border wire party (Name + Phonetic + IDF + DOB/Country + UBO)
-- POST /ubo/check  : Evaluate multi-hop transitive beneficial ownership (OFAC 50% & EU/RBI 25% rules)
+- POST /ubo/check  : Evaluate multi-hop transitive beneficial ownership (OFAC 50% rule & 25% EDD exposure)
 - GET  /watchlist  : Inspect the SDN watchlist, token IDF weights, and UBO corporate graph
 - GET  /bench      : Run the 300-wire benchmark comparing `sancscreen` vs `NaiveLevenshteinMatcher`
 """
@@ -31,7 +31,7 @@ app = FastAPI(
     description=(
         "Multi-Script Transliterator (Devanagari/Arabic/Cyrillic), Consonant Phonetic Skeleton, "
         "Order-Invariant IDF-Weighted Bipartite Token Matcher, Secondary ID Resolver, and "
-        "OFAC 50%-Rule / EU-RBI 25%-Control Transitive Beneficial Ownership Graph Engine."
+        "OFAC 50%-Rule and Beneficial-Ownership Exposure Graph Engine."
     ),
 )
 
@@ -103,7 +103,7 @@ def screen_party(req: ScreenRequest) -> Dict[str, Any]:
 
 @app.post("/ubo/check")
 def check_ubo(req: UBOCheckRequest) -> Dict[str, Any]:
-    """Evaluate transitive beneficial ownership (OFAC 50% rule & EU/RBI 25% rule) for an entity."""
+    """Evaluate transitive beneficial ownership (OFAC 50% rule and 25% EDD exposure) for an entity."""
     res = _PIPELINE.ubo_engine.evaluate_entity(req.entity)
     if res is None:
         raise HTTPException(

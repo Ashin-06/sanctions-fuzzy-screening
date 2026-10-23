@@ -1,15 +1,16 @@
 """
-OFAC 50%-Rule & EU/RBI 25%-Control Transitive Beneficial Ownership (UBO) Graph Engine.
+OFAC 50% Rule and Beneficial-Ownership Exposure Graph Engine.
 
-Models a directed weighted corporate shareholding graph W_{u -> v} in [0, 1] and computes
-cycle-safe transitive effective ownership E = sum_{k=1}^D W^k from all sanctioned SDN
-nodes to every corporate entity.
+Models a directed weighted shareholding graph W_{u -> v} in [0, 1].
 
-Flags shell companies where aggregate direct + indirect ownership by one or more
-sanctioned persons/entities is:
-- >= 50% (OFAC 50% Rule: entity is automatically blocked by operation of law)
-- >= 25% (EU AMLD / RBI Enhanced Due Diligence UBO control threshold)
-even when the shell company's name has zero lexical similarity to any SDN entry.
+- Blocking follows OFAC's 2014 guidance: an entity is blocked when blocked persons together
+  hold 50% or more of it, where "blocked persons" includes entities already blocked under the
+  same rule. Only holdings by blocked persons count; a stake held through an entity that is not
+  itself blocked does not pass through. Computed as a fixpoint, so cross-holdings are safe.
+- Exposure is the proportional look-through stake (products along every simple path from a
+  listed person, summed). It is not a legal test, but an entity with 25% or more exposure
+  (the EU AMLD beneficial-ownership level) is sent to enhanced due diligence. The threshold
+  is configurable; India's PML Rules have used 10% for companies since 2023.
 """
 
 from __future__ import annotations
@@ -62,10 +63,10 @@ class UBOResult:
     target_name: str
     jurisdiction: str
     direct_sdn_match: bool
-    aggregate_sdn_ownership: float  # Proportional transitive SDN ownership in [0, 1]
-    cascading_sdn_ownership: float  # Ownership accounting for >=50% controlled intermediate tiers
-    ofac_50_rule_blocked: bool      # True if >= 50% aggregate SDN ownership
-    edd_25_rule_flagged: bool       # True if >= 25% aggregate SDN ownership (EU/RBI UBO threshold)
+    aggregate_sdn_ownership: float  # Proportional look-through exposure to listed persons in [0, 1]
+    blocked_owner_share: float      # Share held directly by blocked persons (the OFAC 50% test)
+    ofac_50_rule_blocked: bool      # True if blocked persons hold >= 50%
+    edd_25_rule_flagged: bool       # True if blocked, or exposure / blocked share >= the EDD threshold
     max_hop_depth: int
     sanctioned_owners: List[Dict[str, Any]] = field(default_factory=list)
     ownership_paths: List[OwnershipPath] = field(default_factory=list)
@@ -247,40 +248,23 @@ class UBOGraphEngine:
         paths.sort(key=lambda p: (p.effective_share, -p.hop_count), reverse=True)
         return paths
 
-    def _compute_cascading_sdn_stake(self, target_id: str, memo: Optional[Dict[str, float]] = None, visiting: Optional[Set[str]] = None) -> float:
+    def _blocked_share(self, node_id: str, blocked: Set[str]) -> float:
+        return min(1.0, sum(e.share for e in self.rev_adj.get(node_id, []) if e.owner_id in blocked))
+
+    def ofac_blocked_set(self) -> Set[str]:
         """
-        Compute OFAC cascading ownership stake:
-        If an intermediate entity u has >= 50% cascading SDN stake, OFAC treats u itself
-        as a 100% blocked person for its downstream subsidiaries; otherwise u transmits
-        its proportional SDN stake downstream.
+        Fixpoint of the OFAC 50% rule: start from the listed nodes and keep adding any entity
+        that blocked nodes hold 50% or more of, until nothing changes.
         """
-        if memo is None:
-            memo = {}
-        if visiting is None:
-            visiting = set()
-
-        if target_id in memo:
-            return memo[target_id]
-        if target_id in visiting:
-            return 0.0
-
-        node = self.nodes[target_id]
-        if node.is_sanctioned:
-            memo[target_id] = 1.0
-            return 1.0
-
-        visiting.add(target_id)
-        total_cascading = 0.0
-        for in_edge in self.rev_adj.get(target_id, []):
-            owner_stake = self._compute_cascading_sdn_stake(in_edge.owner_id, memo, visiting)
-            # Under OFAC 50% cascading rule, an entity >=50% owned by blocked persons is itself blocked (1.0)
-            effective_owner_factor = 1.0 if owner_stake >= self.ofac_threshold else owner_stake
-            total_cascading += effective_owner_factor * in_edge.share
-
-        visiting.remove(target_id)
-        res = min(1.0, total_cascading)
-        memo[target_id] = res
-        return res
+        blocked = {nid for nid, n in self.nodes.items() if n.is_sanctioned}
+        changed = True
+        while changed:
+            changed = False
+            for nid in self.nodes:
+                if nid not in blocked and self._blocked_share(nid, blocked) >= self.ofac_threshold - 1e-9:
+                    blocked.add(nid)
+                    changed = True
+        return blocked
 
     def evaluate_entity(self, identifier_or_name: str) -> Optional[UBOResult]:
         """
@@ -325,18 +309,10 @@ class UBOGraphEngine:
         if target_node.is_sanctioned:
             prop_total = 1.0
 
-        cascading_total = self._compute_cascading_sdn_stake(node_id)
-        effective_for_rules = max(prop_total, cascading_total)
-
-        ofac_blocked = (
-            target_node.is_sanctioned
-            or prop_total >= (self.ofac_threshold - 1e-9)
-            or cascading_total >= (self.ofac_threshold - 1e-9)
-        )
-        edd_flagged = (
-            ofac_blocked
-            or effective_for_rules >= (self.edd_threshold - 1e-9)
-        )
+        blocked = self.ofac_blocked_set()
+        blocked_share = 1.0 if target_node.is_sanctioned else self._blocked_share(node_id, blocked)
+        ofac_blocked = node_id in blocked
+        edd_flagged = ofac_blocked or max(prop_total, blocked_share) >= (self.edd_threshold - 1e-9)
 
         if ofac_blocked:
             risk_status = "BLOCK_OFAC_50"
@@ -355,7 +331,7 @@ class UBOGraphEngine:
             jurisdiction=target_node.jurisdiction,
             direct_sdn_match=target_node.is_sanctioned,
             aggregate_sdn_ownership=round(prop_total, 4),
-            cascading_sdn_ownership=round(cascading_total, 4),
+            blocked_owner_share=round(blocked_share, 4),
             ofac_50_rule_blocked=ofac_blocked,
             edd_25_rule_flagged=edd_flagged,
             max_hop_depth=max_hops,

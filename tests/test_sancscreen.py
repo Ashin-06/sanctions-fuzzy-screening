@@ -102,3 +102,25 @@ def test_listed_name_with_conflicting_details_goes_to_review(pipeline) -> None:
     res = screen(pipeline, "Tariq Al-Rashid", entity_type="individual", dob="1994-11-23", country="JO")
     assert res["decision"] == "REVIEW"
     assert screen(pipeline, "John Smith", entity_type="individual", dob="1994-11-23")["decision"] == "CLEAR"
+
+
+def test_ofac_rule_counts_only_holdings_by_blocked_persons() -> None:
+    from sancscreen.ubo import GraphNode, OwnershipEdge, UBOGraphEngine
+
+    nodes = [GraphNode("X", "Listed Person", "individual", "XX", True, "SDN-X")] + [
+        GraphNode(n, n, "entity") for n in ("A", "B", "C", "D", "E")
+    ]
+    edges = [
+        # OFAC's worked examples: X 50% of A, X 10% of B, A 40% of B -> B blocked (10% + 40%)
+        OwnershipEdge("X", "A", 0.50), OwnershipEdge("X", "B", 0.10), OwnershipEdge("A", "B", 0.40),
+        # X 40% of C (C not blocked), X 10% of D, C 40% of D -> D not blocked
+        OwnershipEdge("X", "C", 0.40), OwnershipEdge("X", "D", 0.10), OwnershipEdge("C", "D", 0.40),
+        # X holds 30% of E directly; C (40% X, so not blocked) holds the other 70%. E is not
+        # blocked, though the proportional look-through (0.30 + 0.40 * 0.70 = 58%) exceeds 50%
+        OwnershipEdge("X", "E", 0.30), OwnershipEdge("C", "E", 0.70),
+    ]
+    g = UBOGraphEngine(nodes, edges)
+    assert g.evaluate_entity("B").ofac_50_rule_blocked
+    assert not g.evaluate_entity("D").ofac_50_rule_blocked
+    e = g.evaluate_entity("E")
+    assert not e.ofac_50_rule_blocked and e.aggregate_sdn_ownership > 0.5 and e.edd_25_rule_flagged

@@ -31,7 +31,7 @@ class SanctionsScreeningPipeline:
     Production SWIFT / Cross-Border Payment Sanctions Screening Engine combining:
     1. Multi-script transliteration & consonant phonetic skeletonization
     2. Order-invariant IDF-weighted bipartite token matching + DOB/Country/ID reconciliation
-    3. OFAC 50%-rule & EU/RBI 25%-control transitive beneficial ownership (UBO) graph engine
+    3. OFAC 50%-rule blocking and beneficial-ownership exposure (UBO) graph engine
     """
 
     def __init__(
