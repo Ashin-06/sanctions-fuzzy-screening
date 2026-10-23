@@ -35,7 +35,7 @@ CORPORATE_SUFFIXES: Set[str] = {
     "llc", "inc", "incorporated", "corp", "corporation", "co", "company",
     "pvt", "private", "ltd", "limited", "plc", "gmbh", "ag", "kg",
     "jsc", "ojsc", "pjsc", "cjsc", "ooo", "zao", "pao", "ao",
-    "sa", "sarl", "sas", "bv", "nv", "ab", "oy", "kk",
+    "sa", "sarl", "sas", "bv", "nv", "ab", "oy", "kk", "as", "asa", "aps",
     "fze", "fzco", "dmcc", "pjsc", "llp", "lp", "est", "establishment",
     "sharikah", "sharikat", "kompaniya",
 }

@@ -124,3 +124,9 @@ def test_ofac_rule_counts_only_holdings_by_blocked_persons() -> None:
     assert not g.evaluate_entity("D").ofac_50_rule_blocked
     e = g.evaluate_entity("E")
     assert not e.ofac_50_rule_blocked and e.aggregate_sdn_ownership > 0.5 and e.edd_25_rule_flagged
+
+
+def test_ownership_lookup_ignores_nordic_company_suffixes(pipeline) -> None:
+    # The graph node is "Nordic Baltic Bunker Services AS"; "AS" was not a known suffix
+    for name in ("Nordic Baltic Bunker Services Ltd", "Nordic Baltic Bunker Services"):
+        assert screen(pipeline, name, entity_type="entity", country="EE")["hit_source"] == "UBO_50_RULE"
