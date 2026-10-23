@@ -403,6 +403,29 @@ def _extract_year(dob: Optional[str]) -> Optional[int]:
     return int(m.group(1)) if m else None
 
 
+def _blocking_keys(token: str, query: bool = False) -> Set[str]:
+    """
+    First three letters and the phonetic code, plus keys that pair codes one letter longer or
+    shorter (Prigozhin prgsn / Prigozin prgn): a listed code of 4+ letters is also filed under
+    each one-letter deletion ("d:"), and a query looks up its own code there and its deletions
+    among the listed codes. Deleting on both sides would also pair substitutions, and pairing
+    3-letter with 2-letter codes (Nordea nrd / Noor nr), but short codes like "sn" collect
+    hundreds of entries each.
+    """
+    code = phonetic_code(token)
+    keys = {"t:" + token[:3]}
+    if code:
+        keys.add("p:" + code)
+        dels = {code[:i] + code[i + 1:] for i in range(len(code))} if len(code) >= 4 else set()
+        if query:
+            if len(code) >= 3:
+                keys.add("d:" + code)
+            keys.update("p:" + d for d in dels)
+        else:
+            keys.update("d:" + d for d in dels)
+    return keys
+
+
 def types_compatible(query_type: Optional[str], entry_type: str) -> bool:
     """A person is only compared with listed persons, a company with listed entities/vessels."""
     if not query_type:
@@ -421,6 +444,8 @@ class SanctionsMatcher:
         self.token_idf: Dict[str, float] = {}
         self.phonetic_idf: Dict[str, float] = {}
         self._build_idf_index()
+        self.candidate_index: Dict[str, Set[int]] = {}
+        self._build_candidate_index()
 
     def _build_idf_index(self) -> None:
         """Compute empirical corpus IDF combined with domain priors."""
@@ -454,6 +479,40 @@ class SanctionsMatcher:
         self.phonetic_idf = {}
         for pc, df in doc_freq_phon.items():
             self.phonetic_idf[pc] = math.log((total_docs + 1.0) / (df + 0.5)) + 1.0
+
+    def _build_candidate_index(self) -> None:
+        """
+        Blocking index so a query is scored against tens of entries, not the whole list.
+
+        A name reaches REVIEW or BLOCK only if the listed name's highest-IDF token is matched
+        (the distinctive-token cap in _score_token_sets holds it to 0.58 otherwise) or an ID
+        matches exactly. So each name is indexed under the blocking keys of that one token, and
+        each entry under its IDs. Names whose top token is generic (weight < 0.80, no cap) are
+        indexed under every token. A strong partial name plus an exact DOB and country can still
+        reach REVIEW without the distinctive token; the index misses those.
+        """
+        for k, entry in enumerate(self.watchlist):
+            for nm in [entry.name] + list(entry.aliases):
+                toks = normalize_tokens(nm, strip_affixes=True)
+                if not toks:
+                    continue
+                weights = [self.get_token_weight(t) for t in toks]
+                top = max(range(len(toks)), key=lambda i: weights[i])
+                for t in (toks if weights[top] < 0.80 else [toks[top]]):
+                    for key in _blocking_keys(t):
+                        self.candidate_index.setdefault(key, set()).add(k)
+            for raw_id in entry.identifiers:
+                if _normalize_id(raw_id):
+                    self.candidate_index.setdefault("id:" + _normalize_id(raw_id), set()).add(k)
+
+    def candidates(self, query: ScreeningQuery) -> List[SDNEntry]:
+        keys = {key for t in normalize_tokens(query.name, strip_affixes=True) for key in _blocking_keys(t, query=True)}
+        if _normalize_id(query.identifier):
+            keys.add("id:" + _normalize_id(query.identifier))
+        hits: Set[int] = set()
+        for key in keys:
+            hits |= self.candidate_index.get(key, set())
+        return [self.watchlist[k] for k in sorted(hits)]
 
     def get_token_weight(self, token: str) -> float:
         """Return discriminative IDF weight for a normalized Latin token."""
@@ -708,14 +767,15 @@ class SanctionsMatcher:
             explanation="; ".join(expl_parts),
         )
 
-    def screen(self, query: ScreeningQuery, top_k: int = 5) -> Dict[str, Any]:
+    def screen(self, query: ScreeningQuery, top_k: int = 5, full_scan: bool = False) -> Dict[str, Any]:
         """
-        Screen a query against the entire SDN watchlist and return ranked candidates
-        plus decision (`BLOCK`, `REVIEW`, or `CLEAR`).
+        Screen a query against the watchlist entries the candidate index returns (or every
+        entry with `full_scan`) and return ranked candidates plus decision (`BLOCK`, `REVIEW`, or `CLEAR`).
         """
+        pool = self.watchlist if full_scan else self.candidates(query)
         candidates = [
             self.match_entry(query, entry)
-            for entry in self.watchlist
+            for entry in pool
             if types_compatible(query.entity_type, entry.entity_type)
         ]
         candidates.sort(key=lambda c: c.final_score, reverse=True)
