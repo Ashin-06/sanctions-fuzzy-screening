@@ -5,6 +5,7 @@ Usage:
   python -m sancscreen bench
   python -m sancscreen serve --port 8016
   python -m sancscreen screen --name "विक्टर बुट" --country RU --dob 1967-01-13
+  python -m sancscreen realdata --sdn SDN.XML     # the real OFAC list -> results/real_data.json
 """
 
 from __future__ import annotations
@@ -54,7 +55,19 @@ def main(argv: Optional[List[str]] = None) -> int:
     screen_p.add_argument("--country", default=None, help="ISO-2 Country code")
     screen_p.add_argument("--id", dest="identifier", default=None, help="Passport / BIC / LEI")
 
+    real_p = sub.add_parser("realdata", help="Screen against the real OFAC SDN list -> results/real_data.json")
+    real_p.add_argument("--sdn", required=True, help="Path to OFAC's SDN.XML")
+    real_p.add_argument("--sample", type=int, default=30, help="Wires to re-screen with a full scan")
+    real_p.add_argument("--out", default="results/real_data.json")
+
     args = parser.parse_args(argv)
+
+    if args.command == "realdata":
+        from sancscreen.realdata import main as realdata
+
+        res = realdata(args.sdn, args.out, args.sample)
+        print(json.dumps({k: v for k, v in res.items() if "examples" not in k}, indent=2, ensure_ascii=False))
+        return 0
 
     if args.command == "serve":
         if args.host not in ("127.0.0.1", "localhost", "::1") and not os.environ.get("SANCSCREEN_API_KEY"):
