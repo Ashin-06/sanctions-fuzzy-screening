@@ -130,3 +130,20 @@ def test_ownership_lookup_ignores_nordic_company_suffixes(pipeline) -> None:
     # The graph node is "Nordic Baltic Bunker Services AS"; "AS" was not a known suffix
     for name in ("Nordic Baltic Bunker Services Ltd", "Nordic Baltic Bunker Services"):
         assert screen(pipeline, name, entity_type="entity", country="EE")["hit_source"] == "UBO_50_RULE"
+
+
+def test_api_key_and_input_limits(monkeypatch) -> None:
+    import sancscreen.api as api
+
+    client = TestClient(app)
+    monkeypatch.setattr(api, "API_KEY", "s3cret")
+    assert client.post("/screen", json={"name": "John Smith"}).status_code == 401
+    assert client.get("/health").status_code == 200
+    hdr = {"X-API-Key": "s3cret"}
+    assert client.post("/screen", json={"name": "John Smith"}, headers=hdr).status_code == 200
+    assert client.post("/screen", json={"name": "x" * 201}, headers=hdr).status_code == 422
+    assert client.post("/screen", json={"name": "A", "dob": "13/01/1967"}, headers=hdr).status_code == 422
+    assert client.post("/screen", json={"name": "A", "entity_type": "robot"}, headers=hdr).status_code == 422
+    # No browser console ships with this API, so no CORS headers are sent
+    r = client.options("/screen", headers={"Origin": "https://evil.example", "Access-Control-Request-Method": "POST"})
+    assert "access-control-allow-origin" not in r.headers
