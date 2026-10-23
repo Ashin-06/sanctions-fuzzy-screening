@@ -28,7 +28,7 @@ from pydantic import BaseModel, Field
 
 from sancscreen.bench import SanctionsScreeningPipeline, run_benchmark
 from sancscreen.matcher import ScreeningQuery
-from sancscreen.phonetics import normalize_tokens, phonetic_code, phonetic_skeleton, transliterate
+from sancscreen.phonetics import normalize_tokens, phonetic_skeleton, transliterate
 
 app = FastAPI(
     title="sancscreen — Cross-Script Phonetic & UBO Graph Sanctions Screening Engine",

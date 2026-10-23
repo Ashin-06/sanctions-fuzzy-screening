@@ -236,6 +236,7 @@ def run_benchmark() -> Dict[str, Any]:
         }
 
     return {
+        "watchlist_entries": len(watchlist),
         "total_wires": len(wires),
         "positive_wires": sum(1 for w in wires if w.should_block),
         "negative_wires": sum(1 for w in wires if not w.should_block),
@@ -263,7 +264,7 @@ def format_benchmark_report(res: Dict[str, Any]) -> str:
         "=" * 78,
         " SANCSCREEN BENCHMARK REPORT (300 SWIFT / ISO-20022 WIRE TRANSFERS)",
         "=" * 78,
-        f" Watchlist Entries : 20 Multi-Jurisdictional SDN Entities/Individuals",
+        f" Watchlist Entries : {res['watchlist_entries']} synthetic entries (not the real SDN list)",
         f" Test Wire Corpus  : {res['total_wires']} wires ({res['positive_wires']} Blocked / {res['negative_wires']} Clean)",
         f" Latency & Speed   : p50={p['p50_latency_ms']:.2f} ms | p95={p['p95_latency_ms']:.2f} ms | {p['throughput_wires_per_sec']:.0f} wires/sec",
         "-" * 78,

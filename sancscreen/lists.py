@@ -19,7 +19,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import List, Optional
 
-from sancscreen.matcher import SDNEntry, ScreeningQuery
+from sancscreen.matcher import SDNEntry
 from sancscreen.ubo import GraphNode, OwnershipEdge, UBOGraphEngine
 
 
