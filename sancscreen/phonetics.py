@@ -39,6 +39,7 @@ CORPORATE_SUFFIXES: Set[str] = {
     "sa", "sarl", "sas", "bv", "nv", "ab", "oy", "kk", "as", "asa", "aps",
     "fze", "fzco", "dmcc", "pjsc", "llp", "lp", "est", "establishment",
     "sharikah", "sharikat", "kompaniya", "pte", "pty", "sti", "sirketi",
+    "nk",  # neftyanaya kompaniya, "oil company": PAO NK Rosneft
 }
 
 # Company forms spelled out over several words, as OFAC often lists them
