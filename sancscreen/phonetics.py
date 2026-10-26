@@ -38,8 +38,18 @@ CORPORATE_SUFFIXES: Set[str] = {
     "jsc", "ojsc", "pjsc", "cjsc", "ooo", "zao", "pao", "ao",
     "sa", "sarl", "sas", "bv", "nv", "ab", "oy", "kk", "as", "asa", "aps",
     "fze", "fzco", "dmcc", "pjsc", "llp", "lp", "est", "establishment",
-    "sharikah", "sharikat", "kompaniya",
+    "sharikah", "sharikat", "kompaniya", "pte", "pty", "sti", "sirketi",
 }
+
+# Company forms spelled out over several words, as OFAC often lists them
+# ("GAZPROMBANK JOINT STOCK COMPANY", "OBSHCHESTVO S OGRANICHENNOI OTVETSTVENNOSTYU ...")
+CORPORATE_PHRASES = re.compile(
+    r"\b(?:(?:public|open|closed|private) )?joint stock\b"
+    r"|\blimited liability\b"
+    r"|\b(?:(?:publichnoe|otkrytoe|zakrytoe) )?aktsionernoy?e obs?h?chestvo\b"
+    r"|\bobs?h?chestvo s ogranichenno[iy] otvetstvennost(?:yu|iu)\b"
+    r"|\banonim\b(?= sirketi)|\bsendirian berhad\b|\bsdn bhd\b"
+)
 
 STOP_AFFIXES: Set[str] = HONORIFICS_AND_TITLES | PATRONYMIC_PARTICLES | CORPORATE_SUFFIXES
 
@@ -477,7 +487,7 @@ def normalize_tokens(text: str, strip_affixes: bool = True) -> List[str]:
         return raw
 
     filtered: List[str] = []
-    for tok in raw:
+    for tok in CORPORATE_PHRASES.sub(" ", trans).split():
         # Strip attached al- or el- if someone wrote "alrashid"
         if len(tok) > 5 and (tok.startswith("al") or tok.startswith("el")) and tok in ("alrashid", "alassad", "alqaddafi", "alkadhafi", "algaddafi", "albaghdadi", "almasri", "alhussein", "almansour"):
             tok = tok[2:]
