@@ -59,13 +59,17 @@ def main(argv: Optional[List[str]] = None) -> int:
     real_p.add_argument("--sdn", required=True, help="Path to OFAC's SDN.XML")
     real_p.add_argument("--sample", type=int, default=30, help="Wires to re-screen with a full scan")
     real_p.add_argument("--out", default="results/real_data.json")
+    real_p.add_argument("--wikidata", default=None,
+                        help="Folder of Wikidata name CSVs (see realdata.py): also run the held-out set -> heldout.json")
 
     args = parser.parse_args(argv)
 
     if args.command == "realdata":
         from sancscreen.realdata import main as realdata
 
-        res = realdata(args.sdn, args.out, args.sample)
+        res = realdata(args.sdn, args.out, args.sample, args.wikidata)
+        if "heldout" in res:
+            res["heldout"] = res["heldout"]["by_split"]
         print(json.dumps({k: v for k, v in res.items() if "examples" not in k}, indent=2, ensure_ascii=False))
         return 0
 
