@@ -37,7 +37,7 @@ CORPORATE_SUFFIXES: Set[str] = {
     "pvt", "private", "ltd", "limited", "plc", "gmbh", "ag", "kg",
     "jsc", "ojsc", "pjsc", "cjsc", "ooo", "zao", "pao", "ao",
     "sa", "sarl", "sas", "bv", "nv", "ab", "oy", "kk", "as", "asa", "aps",
-    "fze", "fzco", "dmcc", "pjsc", "llp", "lp", "est", "establishment",
+    "fze", "fzco", "dmcc", "llp", "lp", "est", "establishment",
     "sharikah", "sharikat", "kompaniya", "pte", "pty", "sti", "sirketi",
     "nk",  # neftyanaya kompaniya, "oil company": PAO NK Rosneft
 }

@@ -1,6 +1,10 @@
 fastapi>=0.100.0
 uvicorn>=0.22.0
 pydantic>=2.0.0
+babel>=2.12.0          # loading OFAC's SDN.XML: country names -> ISO codes
+defusedxml>=0.7        # parsing SDN.XML without entity expansion
+sqlalchemy>=2.0
+psycopg[binary]>=3.2   # only used with a postgresql:// SANCSCREEN_DATABASE_URL
+prometheus-client>=0.20
 httpx>=0.24.0
 pytest>=7.0.0
-babel>=2.12.0          # realdata.py only: OFAC country names -> ISO codes
