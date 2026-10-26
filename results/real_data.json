@@ -10,2970 +10,24 @@
   "with_dob": 7448,
   "with_country": 16977,
   "with_identifier": 14321,
-  "load_seconds": 2.1,
-  "matcher_and_index_build_seconds": 1.61,
+  "load_seconds": 2.53,
+  "matcher_and_index_build_seconds": 2.26,
   "full_scan_sample": {
     "wires": 30,
-    "median_seconds": 2.03,
-    "same_decision_and_top_entry_as_index": 29
+    "median_seconds": 1.69,
+    "same_decision_and_top_entry_as_index": 30
   },
   "strong_akas_only": {
     "entries": 19471,
     "aliases": 20192,
     "latency_ms_indexed": {
-      "median": 32.11,
-      "p95": 97.87,
-      "max": 220.51
+      "median": 41.2,
+      "p95": 145.06,
+      "max": 321.18
     },
     "candidates_per_wire": {
-      "median": 177.0,
-      "max": 460
-    },
-    "synthetic_entries_on_real_list": {
-      "SDN-001": [
-        "OFAC-8279"
-      ],
-      "SDN-003": [
-        "OFAC-12606"
-      ],
-      "SDN-004": [
-        "OFAC-10481"
-      ],
-      "SDN-005": [
-        "OFAC-35233"
-      ],
-      "SDN-006": [
-        "OFAC-21171"
-      ],
-      "SDN-007": [
-        "OFAC-24283"
-      ],
-      "SDN-008": [
-        "OFAC-9760"
-      ],
-      "SDN-009": [
-        "OFAC-2686"
-      ],
-      "SDN-010": [
-        "OFAC-12735"
-      ],
-      "SDN-011": [
-        "OFAC-6915"
-      ],
-      "SDN-013": [
-        "OFAC-36407"
-      ],
-      "SDN-014": [
-        "OFAC-10725"
-      ],
-      "SDN-015": [
-        "OFAC-23343"
-      ],
-      "SDN-017": [
-        "OFAC-17022"
-      ],
-      "SDN-018": [
-        "OFAC-12927"
-      ],
-      "SDN-019": [
-        "OFAC-9347"
-      ],
-      "SDN-020": [
-        "OFAC-17016"
-      ]
-    },
-    "synthetic_entries_not_on_real_list": [
-      "SDN-002",
-      "SDN-012",
-      "SDN-016"
-    ],
-    "wires": {
-      "names a listed person or company": {
-        "wires": 99,
-        "BLOCK": 94,
-        "REVIEW": 5,
-        "CLEAR": 0,
-        "blocked_on_a_one_word_name": 4,
-        "blocked_on_the_right_entry": 87
-      },
-      "names a synthetic entry not on the real list": {
-        "wires": 21,
-        "BLOCK": 17,
-        "REVIEW": 4,
-        "CLEAR": 0,
-        "blocked_on_a_one_word_name": 3
-      },
-      "shell company (synthetic ownership graph)": {
-        "wires": 30,
-        "BLOCK": 24,
-        "REVIEW": 6,
-        "CLEAR": 0,
-        "blocked_on_a_one_word_name": 12
-      },
-      "hard negative": {
-        "wires": 150,
-        "BLOCK": 86,
-        "REVIEW": 58,
-        "CLEAR": 6,
-        "blocked_on_a_one_word_name": 40
-      }
-    },
-    "listed_wires_not_blocked_on_their_entry": [
-      {
-        "wire": "WIRE-0020",
-        "name": "Gazprombank JSC",
-        "dob": null,
-        "country": "RU",
-        "decision": "BLOCK",
-        "score": 0.8615,
-        "top_match": "OOO GAZPROMMASH",
-        "listed_as": "GAZPROMBANK JOINT STOCK COMPANY",
-        "listed_dob": null
-      },
-      {
-        "wire": "WIRE-0030",
-        "name": "Gazprombank OOO",
-        "dob": null,
-        "country": "RU",
-        "decision": "BLOCK",
-        "score": 0.9415,
-        "top_match": "OOO GAZPROMMASH",
-        "listed_as": "GAZPROMBANK JOINT STOCK COMPANY",
-        "listed_dob": null
-      },
-      {
-        "wire": "WIRE-0031",
-        "name": "विक्टर बुट",
-        "dob": "1967-01-13",
-        "country": "RU",
-        "decision": "REVIEW",
-        "score": 0.6366,
-        "top_match": "Abdul Majid BUTT",
-        "listed_as": "Viktor Anatolijevitch BOUT",
-        "listed_dob": "1967-01-13"
-      },
-      {
-        "wire": "WIRE-0032",
-        "name": "श्री विक्टर बुट",
-        "dob": "1967-01-13",
-        "country": "RU",
-        "decision": "REVIEW",
-        "score": 0.6366,
-        "top_match": "Abdul Majid BUTT",
-        "listed_as": "Viktor Anatolijevitch BOUT",
-        "listed_dob": "1967-01-13"
-      },
-      {
-        "wire": "WIRE-0051",
-        "name": "حسن نصر الله",
-        "dob": "1960-08-31",
-        "country": "LB",
-        "decision": "BLOCK",
-        "score": 1.0,
-        "top_match": "Nasr AL-ALI",
-        "listed_as": "Hasan NASRALLAH",
-        "listed_dob": "1960-08-31"
-      },
-      {
-        "wire": "WIRE-0058",
-        "name": "فيكتور بوت",
-        "dob": "1967-01-13",
-        "country": "RU",
-        "decision": "REVIEW",
-        "score": 0.6366,
-        "top_match": "Abdul Majid BUTT",
-        "listed_as": "Viktor Anatolijevitch BOUT",
-        "listed_dob": "1967-01-13"
-      },
-      {
-        "wire": "WIRE-0061",
-        "name": "Виктор Бут",
-        "dob": "1967-01-13",
-        "country": "RU",
-        "decision": "REVIEW",
-        "score": 0.6366,
-        "top_match": "Abdul Majid BUTT",
-        "listed_as": "Viktor Anatolijevitch BOUT",
-        "listed_dob": "1967-01-13"
-      },
-      {
-        "wire": "WIRE-0075",
-        "name": "Газпромбанк АО",
-        "dob": null,
-        "country": "RU",
-        "decision": "BLOCK",
-        "score": 0.9415,
-        "top_match": "OOO GAZPROMMASH",
-        "listed_as": "GAZPROMBANK JOINT STOCK COMPANY",
-        "listed_dob": null
-      },
-      {
-        "wire": "WIRE-0077",
-        "name": "Bout, Victor",
-        "dob": "1967-01-13",
-        "country": "RU",
-        "decision": "REVIEW",
-        "score": 0.627,
-        "top_match": "Abdul Majid BUTT",
-        "listed_as": "Viktor Anatolijevitch BOUT",
-        "listed_dob": "1967-01-13"
-      },
-      {
-        "wire": "WIRE-0078",
-        "name": "Victor A. Bout",
-        "dob": "1967-01-13",
-        "country": "RU",
-        "decision": "BLOCK",
-        "score": 0.799,
-        "top_match": "Abdul Majid BUTT",
-        "listed_as": "Viktor Anatolijevitch BOUT",
-        "listed_dob": "1967-01-13"
-      },
-      {
-        "wire": "WIRE-0105",
-        "name": "Muhammed I. Al-Masri",
-        "dob": "1963-07-19",
-        "country": "PS",
-        "decision": "BLOCK",
-        "score": 0.9921,
-        "top_match": "Mohammed AL-MASRI",
-        "listed_as": "Abdullah Ahmed ABDULLAH",
-        "listed_dob": "1963"
-      },
-      {
-        "wire": "WIRE-0119",
-        "name": "V. A. But",
-        "dob": "1967-01-13",
-        "country": "RU",
-        "decision": "BLOCK",
-        "score": 0.7547,
-        "top_match": "Abdul Majid BUTT",
-        "listed_as": "Viktor Anatolijevitch BOUT",
-        "listed_dob": "1967-01-13"
-      }
-    ],
-    "flagged_wires_outside_listed": [
-      {
-        "wire": "WIRE-0002",
-        "group": "names a synthetic entry not on the real list",
-        "name": "Tariq Al-Rashid",
-        "dob": "1968-04-12",
-        "country": "SY",
-        "decision": "REVIEW",
-        "score": 0.7354,
-        "matched": "Amin ABU RASHED",
-        "listed_dob": "1967-10-10",
-        "listed_countries": [
-          "NL"
-        ]
-      },
-      {
-        "wire": "WIRE-0012",
-        "group": "names a synthetic entry not on the real list",
-        "name": "Ahmed Abdullah Al-Baghdadi",
-        "dob": "1971-05-04",
-        "country": "IQ",
-        "decision": "BLOCK",
-        "score": 0.8432,
-        "matched": "Ali AGHA-AHMADI",
-        "listed_dob": null,
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0016",
-        "group": "names a synthetic entry not on the real list",
-        "name": "Al-Noor Global Trading LLC",
-        "dob": null,
-        "country": "SY",
-        "decision": "BLOCK",
-        "score": 0.9619,
-        "matched": "NIRU CO. LTD.",
-        "listed_dob": null,
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0022",
-        "group": "names a synthetic entry not on the real list",
-        "name": "Sheikh Tariq Al-Rashid",
-        "dob": "1968-04-12",
-        "country": "SY",
-        "decision": "BLOCK",
-        "score": 0.8154,
-        "matched": "Amin ABU RASHED",
-        "listed_dob": "1967-10-10",
-        "listed_countries": [
-          "NL"
-        ]
-      },
-      {
-        "wire": "WIRE-0028",
-        "group": "names a synthetic entry not on the real list",
-        "name": "Al-Noor Global Trading Limited",
-        "dob": null,
-        "country": "AE",
-        "decision": "BLOCK",
-        "score": 1.0,
-        "matched": "NARIA GENERAL TRADING LLC",
-        "listed_dob": null,
-        "listed_countries": [
-          "AE"
-        ]
-      },
-      {
-        "wire": "WIRE-0033",
-        "group": "names a synthetic entry not on the real list",
-        "name": "तारिक अल रशीद",
-        "dob": "1968-04-12",
-        "country": "SY",
-        "decision": "BLOCK",
-        "score": 0.8154,
-        "matched": "Amin ABU RASHED",
-        "listed_dob": "1967-10-10",
-        "listed_countries": [
-          "NL"
-        ]
-      },
-      {
-        "wire": "WIRE-0034",
-        "group": "names a synthetic entry not on the real list",
-        "name": "शेख तारिक अल रशीद",
-        "dob": "1968-04-12",
-        "country": "SY",
-        "decision": "BLOCK",
-        "score": 0.8154,
-        "matched": "Amin ABU RASHED",
-        "listed_dob": "1967-10-10",
-        "listed_countries": [
-          "NL"
-        ]
-      },
-      {
-        "wire": "WIRE-0044",
-        "group": "names a synthetic entry not on the real list",
-        "name": "अहमद अब्दुल्ला अल बगदादी",
-        "dob": "1971-05-04",
-        "country": "IQ",
-        "decision": "REVIEW",
-        "score": 0.7426,
-        "matched": "Ali AGHA-AHMADI",
-        "listed_dob": null,
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0046",
-        "group": "names a synthetic entry not on the real list",
-        "name": "طارق الرشيد",
-        "dob": "1968-04-12",
-        "country": "SY",
-        "decision": "BLOCK",
-        "score": 0.8154,
-        "matched": "Amin ABU RASHED",
-        "listed_dob": "1967-10-10",
-        "listed_countries": [
-          "NL"
-        ]
-      },
-      {
-        "wire": "WIRE-0047",
-        "group": "names a synthetic entry not on the real list",
-        "name": "الشيخ طارق الرشيد",
-        "dob": "1968-04-12",
-        "country": "SY",
-        "decision": "BLOCK",
-        "score": 0.8154,
-        "matched": "Amin ABU RASHED",
-        "listed_dob": "1967-10-10",
-        "listed_countries": [
-          "NL"
-        ]
-      },
-      {
-        "wire": "WIRE-0048",
-        "group": "names a synthetic entry not on the real list",
-        "name": "طارق بن رشيد",
-        "dob": "1968-04-12",
-        "country": "SY",
-        "decision": "BLOCK",
-        "score": 0.8154,
-        "matched": "Amin ABU RASHED",
-        "listed_dob": "1967-10-10",
-        "listed_countries": [
-          "NL"
-        ]
-      },
-      {
-        "wire": "WIRE-0057",
-        "group": "names a synthetic entry not on the real list",
-        "name": "أحمد عبدالله البغدادي",
-        "dob": "1971-05-04",
-        "country": "IQ",
-        "decision": "BLOCK",
-        "score": 0.8432,
-        "matched": "Ali AGHA-AHMADI",
-        "listed_dob": null,
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0060",
-        "group": "names a synthetic entry not on the real list",
-        "name": "شركة النور للتجارة",
-        "dob": null,
-        "country": "SY",
-        "decision": "BLOCK",
-        "score": 0.9725,
-        "matched": "NIRU CO. LTD.",
-        "listed_dob": null,
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0079",
-        "group": "names a synthetic entry not on the real list",
-        "name": "Al-Rasheed, Tarek",
-        "dob": "1968-04-12",
-        "country": "SY",
-        "decision": "REVIEW",
-        "score": 0.5748,
-        "matched": "Amin ABU RASHED",
-        "listed_dob": "1967-10-10",
-        "listed_countries": [
-          "NL"
-        ]
-      },
-      {
-        "wire": "WIRE-0080",
-        "group": "names a synthetic entry not on the real list",
-        "name": "Rashid, Sheikh Tarik Bin",
-        "dob": "1968-04-12",
-        "country": "SY",
-        "decision": "BLOCK",
-        "score": 0.8089,
-        "matched": "Amin ABU RASHED",
-        "listed_dob": "1967-10-10",
-        "listed_countries": [
-          "NL"
-        ]
-      },
-      {
-        "wire": "WIRE-0081",
-        "group": "names a synthetic entry not on the real list",
-        "name": "Tarek El-Rachid",
-        "dob": "1968-04-12",
-        "country": "SY",
-        "decision": "REVIEW",
-        "score": 0.5755,
-        "matched": "Amin ABU RASHED",
-        "listed_dob": "1967-10-10",
-        "listed_countries": [
-          "NL"
-        ]
-      },
-      {
-        "wire": "WIRE-0106",
-        "group": "names a synthetic entry not on the real list",
-        "name": "Al-Baghdadi, Ahmad Abdulla",
-        "dob": "1971-05-04",
-        "country": "IQ",
-        "decision": "BLOCK",
-        "score": 0.8316,
-        "matched": "Abu ABDALLAH",
-        "listed_dob": "1970-05-15",
-        "listed_countries": [
-          "PK"
-        ]
-      },
-      {
-        "wire": "WIRE-0107",
-        "group": "names a synthetic entry not on the real list",
-        "name": "Ahmed Abdallah Baghdady",
-        "dob": "1971-05-04",
-        "country": "IQ",
-        "decision": "BLOCK",
-        "score": 0.8178,
-        "matched": "Ali AGHA-AHMADI",
-        "listed_dob": null,
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0114",
-        "group": "names a synthetic entry not on the real list",
-        "name": "Trading Global Al-Noor LLC",
-        "dob": null,
-        "country": "SY",
-        "decision": "BLOCK",
-        "score": 0.9718,
-        "matched": "NARIA GENERAL TRADING LLC",
-        "listed_dob": null,
-        "listed_countries": [
-          "AE"
-        ]
-      },
-      {
-        "wire": "WIRE-0115",
-        "group": "names a synthetic entry not on the real list",
-        "name": "Sharikah Al-Nour Lil-Tijara",
-        "dob": null,
-        "country": "AE",
-        "decision": "BLOCK",
-        "score": 1.0,
-        "matched": "NARIA GENERAL TRADING LLC",
-        "listed_dob": null,
-        "listed_countries": [
-          "AE"
-        ]
-      },
-      {
-        "wire": "WIRE-0120",
-        "group": "names a synthetic entry not on the real list",
-        "name": "T. Al-Rashid",
-        "dob": "1968-04-12",
-        "country": "SY",
-        "decision": "BLOCK",
-        "score": 0.8622,
-        "matched": "Rachid FETTAR",
-        "listed_dob": "1969-04-16",
-        "listed_countries": [
-          "IT"
-        ]
-      },
-      {
-        "wire": "WIRE-0121",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "Blue Horizon Maritime Logistics Ltd",
-        "dob": null,
-        "country": "VG",
-        "decision": "BLOCK",
-        "score": 0.8126,
-        "matched": "HORIZON",
-        "listed_dob": null,
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0122",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "Blue Horizon Maritime Logistics Limited",
-        "dob": null,
-        "country": "VG",
-        "decision": "BLOCK",
-        "score": 0.8126,
-        "matched": "HORIZON",
-        "listed_dob": null,
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0123",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "Blue Horizon Maritime Logistics",
-        "dob": null,
-        "country": "VG",
-        "decision": "BLOCK",
-        "score": 0.8126,
-        "matched": "HORIZON",
-        "listed_dob": null,
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0124",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "BLUE HORIZON MARITIME LOGISTICS LTD",
-        "dob": null,
-        "country": "CY",
-        "decision": "BLOCK",
-        "score": 0.8126,
-        "matched": "HORIZON",
-        "listed_dob": null,
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0125",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "Blue Horizon Maritime Logistics LLC",
-        "dob": null,
-        "country": "AE",
-        "decision": "BLOCK",
-        "score": 0.8126,
-        "matched": "HORIZON",
-        "listed_dob": null,
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0126",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "Logistics Maritime Blue Horizon Ltd",
-        "dob": null,
-        "country": "VG",
-        "decision": "BLOCK",
-        "score": 0.8126,
-        "matched": "HORIZON",
-        "listed_dob": null,
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0127",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "Aegean Star Petrotech FZE",
-        "dob": null,
-        "country": "AE",
-        "decision": "BLOCK",
-        "score": 0.8124,
-        "matched": "PETROTECH FZE",
-        "listed_dob": null,
-        "listed_countries": [
-          "AE"
-        ]
-      },
-      {
-        "wire": "WIRE-0128",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "Aegean Star Petrotech FZCO",
-        "dob": null,
-        "country": "AE",
-        "decision": "BLOCK",
-        "score": 0.8124,
-        "matched": "PETROTECH FZE",
-        "listed_dob": null,
-        "listed_countries": [
-          "AE"
-        ]
-      },
-      {
-        "wire": "WIRE-0129",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "Aegean Star Petrotech",
-        "dob": null,
-        "country": "AE",
-        "decision": "BLOCK",
-        "score": 0.8124,
-        "matched": "PETROTECH FZE",
-        "listed_dob": null,
-        "listed_countries": [
-          "AE"
-        ]
-      },
-      {
-        "wire": "WIRE-0130",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "AEGEAN STAR PETROTECH FZE",
-        "dob": null,
-        "country": "AE",
-        "decision": "BLOCK",
-        "score": 0.8124,
-        "matched": "PETROTECH FZE",
-        "listed_dob": null,
-        "listed_countries": [
-          "AE"
-        ]
-      },
-      {
-        "wire": "WIRE-0131",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "Aegean Star Petrotech LLC",
-        "dob": null,
-        "country": "SY",
-        "decision": "BLOCK",
-        "score": 0.7624,
-        "matched": "PETROTECH FZE",
-        "listed_dob": null,
-        "listed_countries": [
-          "AE"
-        ]
-      },
-      {
-        "wire": "WIRE-0132",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "Petrotech Aegean Star FZE",
-        "dob": null,
-        "country": "AE",
-        "decision": "BLOCK",
-        "score": 0.8124,
-        "matched": "PETROTECH FZE",
-        "listed_dob": null,
-        "listed_countries": [
-          "AE"
-        ]
-      },
-      {
-        "wire": "WIRE-0133",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "Vostok Meridian Chartering GmbH",
-        "dob": null,
-        "country": "CH",
-        "decision": "BLOCK",
-        "score": 0.8103,
-        "matched": "VOSTOK TRADING LLC",
-        "listed_dob": null,
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0134",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "Vostok Meridian Chartering AG",
-        "dob": null,
-        "country": "CH",
-        "decision": "BLOCK",
-        "score": 0.8103,
-        "matched": "VOSTOK TRADING LLC",
-        "listed_dob": null,
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0135",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "Vostok Meridian Chartering",
-        "dob": null,
-        "country": "CH",
-        "decision": "BLOCK",
-        "score": 0.8103,
-        "matched": "VOSTOK TRADING LLC",
-        "listed_dob": null,
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0136",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "VOSTOK MERIDIAN CHARTERING GMBH",
-        "dob": null,
-        "country": "CH",
-        "decision": "BLOCK",
-        "score": 0.8103,
-        "matched": "VOSTOK TRADING LLC",
-        "listed_dob": null,
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0137",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "Vostok Meridian Chartering Ltd",
-        "dob": null,
-        "country": "CY",
-        "decision": "BLOCK",
-        "score": 0.8103,
-        "matched": "VOSTOK TRADING LLC",
-        "listed_dob": null,
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0138",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "Chartering Vostok Meridian GmbH",
-        "dob": null,
-        "country": "CH",
-        "decision": "BLOCK",
-        "score": 0.8103,
-        "matched": "VOSTOK TRADING LLC",
-        "listed_dob": null,
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0139",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "Saffron Gulf Petrochemicals DMCC",
-        "dob": null,
-        "country": "AE",
-        "decision": "BLOCK",
-        "score": 0.7606,
-        "matched": "PETROCHEMICAL TRADING COMPANY LIMITED",
-        "listed_dob": null,
-        "listed_countries": [
-          "JE",
-          "TM",
-          "AE",
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0140",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "Saffron Gulf Petrochemicals FZE",
-        "dob": null,
-        "country": "AE",
-        "decision": "BLOCK",
-        "score": 0.7606,
-        "matched": "PETROCHEMICAL TRADING COMPANY LIMITED",
-        "listed_dob": null,
-        "listed_countries": [
-          "JE",
-          "TM",
-          "AE",
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0141",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "Saffron Gulf Petrochemicals",
-        "dob": null,
-        "country": "AE",
-        "decision": "BLOCK",
-        "score": 0.7606,
-        "matched": "PETROCHEMICAL TRADING COMPANY LIMITED",
-        "listed_dob": null,
-        "listed_countries": [
-          "JE",
-          "TM",
-          "AE",
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0142",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "SAFFRON GULF PETROCHEMICALS DMCC",
-        "dob": null,
-        "country": "AE",
-        "decision": "BLOCK",
-        "score": 0.7606,
-        "matched": "PETROCHEMICAL TRADING COMPANY LIMITED",
-        "listed_dob": null,
-        "listed_countries": [
-          "JE",
-          "TM",
-          "AE",
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0143",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "Saffron Gulf Petrochemicals LLC",
-        "dob": null,
-        "country": "IR",
-        "decision": "BLOCK",
-        "score": 0.7606,
-        "matched": "PETROCHEMICAL TRADING COMPANY LIMITED",
-        "listed_dob": null,
-        "listed_countries": [
-          "JE",
-          "TM",
-          "AE",
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0144",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "Petrochemicals Saffron Gulf DMCC",
-        "dob": null,
-        "country": "AE",
-        "decision": "BLOCK",
-        "score": 0.7606,
-        "matched": "PETROCHEMICAL TRADING COMPANY LIMITED",
-        "listed_dob": null,
-        "listed_countries": [
-          "JE",
-          "TM",
-          "AE",
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0145",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "Nordic Baltic Bunker Services AS",
-        "dob": null,
-        "country": "EE",
-        "decision": "REVIEW",
-        "score": 0.7473,
-        "matched": "NIORDC",
-        "listed_dob": null,
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0146",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "Nordic Baltic Bunker Services Ltd",
-        "dob": null,
-        "country": "EE",
-        "decision": "REVIEW",
-        "score": 0.7473,
-        "matched": "NIORDC",
-        "listed_dob": null,
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0147",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "Nordic Baltic Bunker Services",
-        "dob": null,
-        "country": "EE",
-        "decision": "REVIEW",
-        "score": 0.7473,
-        "matched": "NIORDC",
-        "listed_dob": null,
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0148",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "NORDIC BALTIC BUNKER SERVICES AS",
-        "dob": null,
-        "country": "EE",
-        "decision": "REVIEW",
-        "score": 0.7473,
-        "matched": "NIORDC",
-        "listed_dob": null,
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0149",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "Nordic Baltic Bunker Services BV",
-        "dob": null,
-        "country": "NL",
-        "decision": "REVIEW",
-        "score": 0.7473,
-        "matched": "NIORDC",
-        "listed_dob": null,
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0150",
-        "group": "shell company (synthetic ownership graph)",
-        "name": "Bunker Services Nordic Baltic AS",
-        "dob": null,
-        "country": "EE",
-        "decision": "REVIEW",
-        "score": 0.7473,
-        "matched": "NIORDC",
-        "listed_dob": null,
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0151",
-        "group": "hard negative",
-        "name": "Tariq Al-Rashid",
-        "dob": "1994-11-23",
-        "country": "JO",
-        "decision": "REVIEW",
-        "score": 0.323,
-        "matched": "Muhammad Agha Ahmed Rashdi QATIRJI",
-        "listed_dob": "1991-01-01",
-        "listed_countries": [
-          "AE",
-          "SY"
-        ]
-      },
-      {
-        "wire": "WIRE-0152",
-        "group": "hard negative",
-        "name": "Tariq Al-Rashid",
-        "dob": "1991-06-15",
-        "country": "AE",
-        "decision": "REVIEW",
-        "score": 0.723,
-        "matched": "Muhammad Agha Ahmed Rashdi QATIRJI",
-        "listed_dob": "1991-01-01",
-        "listed_countries": [
-          "AE",
-          "SY"
-        ]
-      },
-      {
-        "wire": "WIRE-0153",
-        "group": "hard negative",
-        "name": "Tarek Al-Rashid",
-        "dob": "1989-02-19",
-        "country": "SA",
-        "decision": "REVIEW",
-        "score": 0.306,
-        "matched": "Muhammad Agha Ahmed Rashdi QATIRJI",
-        "listed_dob": "1991-01-01",
-        "listed_countries": [
-          "AE",
-          "SY"
-        ]
-      },
-      {
-        "wire": "WIRE-0154",
-        "group": "hard negative",
-        "name": "Mohammed Ibrahim Al-Masri",
-        "dob": "1995-08-12",
-        "country": "JO",
-        "decision": "BLOCK",
-        "score": 0.7714,
-        "matched": "Bashir Mohamed MAHAMOUD",
-        "listed_dob": null,
-        "listed_countries": [
-          "SO"
-        ]
-      },
-      {
-        "wire": "WIRE-0155",
-        "group": "hard negative",
-        "name": "Mohammed Ibrahim Al-Masri",
-        "dob": "1988-03-29",
-        "country": "AE",
-        "decision": "BLOCK",
-        "score": 0.858,
-        "matched": "Milad MANSURI",
-        "listed_dob": "1989-09-11",
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0156",
-        "group": "hard negative",
-        "name": "Muhammad Ibrahim Al-Masri",
-        "dob": "1992-10-04",
-        "country": "KW",
-        "decision": "BLOCK",
-        "score": 0.772,
-        "matched": "Bashir Mohamed MAHAMOUD",
-        "listed_dob": null,
-        "listed_countries": [
-          "SO"
-        ]
-      },
-      {
-        "wire": "WIRE-0157",
-        "group": "hard negative",
-        "name": "Ahmed Abdullah Al-Baghdadi",
-        "dob": "1996-01-17",
-        "country": "OM",
-        "decision": "BLOCK",
-        "score": 0.8297,
-        "matched": "Hussein Ahmad ABDALLAH",
-        "listed_dob": "1996-02-11",
-        "listed_countries": [
-          "LB"
-        ]
-      },
-      {
-        "wire": "WIRE-0158",
-        "group": "hard negative",
-        "name": "Ahmed Abdullah Al-Baghdadi",
-        "dob": "1993-07-22",
-        "country": "BH",
-        "decision": "REVIEW",
-        "score": 0.6132,
-        "matched": "Ali AGHA-AHMADI",
-        "listed_dob": null,
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0159",
-        "group": "hard negative",
-        "name": "Sergei Lavrov",
-        "dob": "1992-05-14",
-        "country": "DE",
-        "decision": "REVIEW",
-        "score": 0.4698,
-        "matched": "Sergey LAVROV",
-        "listed_dob": "1950-03-21",
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0160",
-        "group": "hard negative",
-        "name": "Sergey Lavrov",
-        "dob": "1989-11-08",
-        "country": "US",
-        "decision": "REVIEW",
-        "score": 0.5156,
-        "matched": "Anton Konstantinovich LAVRENTIEV",
-        "listed_dob": "1989-04-09",
-        "listed_countries": [
-          "BY"
-        ]
-      },
-      {
-        "wire": "WIRE-0161",
-        "group": "hard negative",
-        "name": "Viktor But",
-        "dob": "1997-04-03",
-        "country": "PL",
-        "decision": "REVIEW",
-        "score": 0.3361,
-        "matched": "Tatiana Viktorovna BUTSKAYA",
-        "listed_dob": "1975-05-08",
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0163",
-        "group": "hard negative",
-        "name": "Hassan Nasrallah",
-        "dob": "1994-12-11",
-        "country": "CA",
-        "decision": "BLOCK",
-        "score": 0.7525,
-        "matched": "Hasen NASYM",
-        "listed_dob": "1994-08-08",
-        "listed_countries": [
-          "MV"
-        ]
-      },
-      {
-        "wire": "WIRE-0164",
-        "group": "hard negative",
-        "name": "Hasan Nasrallah",
-        "dob": "1990-02-28",
-        "country": "AU",
-        "decision": "REVIEW",
-        "score": 0.4912,
-        "matched": "Ghassan NASR EL DIN GHASSAN",
-        "listed_dob": "1962-12-13",
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0165",
-        "group": "hard negative",
-        "name": "Dmitry Medvedev",
-        "dob": "1995-06-30",
-        "country": "IL",
-        "decision": "BLOCK",
-        "score": 0.9948,
-        "matched": "Ilya Dmitrievich MEDVEDEV",
-        "listed_dob": "1995-08-03",
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0166",
-        "group": "hard negative",
-        "name": "Dmitri Medvedev",
-        "dob": "1991-01-15",
-        "country": "GB",
-        "decision": "REVIEW",
-        "score": 0.6192,
-        "matched": "Ilya Dmitrievich MEDVEDEV",
-        "listed_dob": "1995-08-03",
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0167",
-        "group": "hard negative",
-        "name": "Oleg Deripaska",
-        "dob": "1996-08-21",
-        "country": "US",
-        "decision": "REVIEW",
-        "score": 0.4397,
-        "matched": "Oleg Vladimirovich DERIPASKA",
-        "listed_dob": "1968-01-02",
-        "listed_countries": [
-          "RU",
-          "GB",
-          "CY"
-        ]
-      },
-      {
-        "wire": "WIRE-0168",
-        "group": "hard negative",
-        "name": "Rami Makhlouf",
-        "dob": "1995-03-09",
-        "country": "FR",
-        "decision": "REVIEW",
-        "score": 0.4194,
-        "matched": "Ryan Hassan MAKLED",
-        "listed_dob": "1993-10-25",
-        "listed_countries": [
-          "LB"
-        ]
-      },
-      {
-        "wire": "WIRE-0169",
-        "group": "hard negative",
-        "name": "Bashar Al-Assad",
-        "dob": "1993-10-27",
-        "country": "SE",
-        "decision": "REVIEW",
-        "score": 0.5597,
-        "matched": "Ehsan Saidi NASAB",
-        "listed_dob": "1994-09-23",
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0170",
-        "group": "hard negative",
-        "name": "Aleksandr Lukashenko",
-        "dob": "1994-07-14",
-        "country": "LT",
-        "decision": "REVIEW",
-        "score": 0.4607,
-        "matched": "Dmitry Aleksandrovich LUKASHENKO",
-        "listed_dob": "1980-03-23",
-        "listed_countries": [
-          "BY"
-        ]
-      },
-      {
-        "wire": "WIRE-0171",
-        "group": "hard negative",
-        "name": "Yevgeny Prigozhin",
-        "dob": "1996-11-02",
-        "country": "EE",
-        "decision": "REVIEW",
-        "score": 0.4989,
-        "matched": "Andrey Yevgenyevich PURGIN",
-        "listed_dob": "1972-01-26",
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0172",
-        "group": "hard negative",
-        "name": "Ramzan Kadyrov",
-        "dob": "1998-05-19",
-        "country": "KZ",
-        "decision": "REVIEW",
-        "score": 0.4289,
-        "matched": "Ramzan Akhmatovich KADYROV",
-        "listed_dob": "1976-10-05",
-        "listed_countries": [
-          "RU",
-          "AE"
-        ]
-      },
-      {
-        "wire": "WIRE-0173",
-        "group": "hard negative",
-        "name": "Qasim Suleimani",
-        "dob": "1992-09-01",
-        "country": "TR",
-        "decision": "BLOCK",
-        "score": 0.8014,
-        "matched": "Ali QASIR",
-        "listed_dob": "1992-07-29",
-        "listed_countries": [
-          "IR",
-          "LB"
-        ]
-      },
-      {
-        "wire": "WIRE-0174",
-        "group": "hard negative",
-        "name": "Mohammed Ibrahim",
-        "dob": "1985-04-10",
-        "country": "IN",
-        "decision": "BLOCK",
-        "score": 0.8252,
-        "matched": "Bashir Mohamed MOHAMOUD",
-        "listed_dob": null,
-        "listed_countries": [
-          "SO"
-        ]
-      },
-      {
-        "wire": "WIRE-0175",
-        "group": "hard negative",
-        "name": "Ahmed Abdullah",
-        "dob": "1987-12-05",
-        "country": "MY",
-        "decision": "REVIEW",
-        "score": 0.6728,
-        "matched": "Azadeh ABDOLALIPUR",
-        "listed_dob": "1988-09-11",
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0176",
-        "group": "hard negative",
-        "name": "Tariq Al-Rashid",
-        "dob": "1994-11-23",
-        "country": "JO",
-        "decision": "REVIEW",
-        "score": 0.323,
-        "matched": "Muhammad Agha Ahmed Rashdi QATIRJI",
-        "listed_dob": "1991-01-01",
-        "listed_countries": [
-          "AE",
-          "SY"
-        ]
-      },
-      {
-        "wire": "WIRE-0177",
-        "group": "hard negative",
-        "name": "Tariq Al-Rashid",
-        "dob": "1991-06-15",
-        "country": "AE",
-        "decision": "REVIEW",
-        "score": 0.723,
-        "matched": "Muhammad Agha Ahmed Rashdi QATIRJI",
-        "listed_dob": "1991-01-01",
-        "listed_countries": [
-          "AE",
-          "SY"
-        ]
-      },
-      {
-        "wire": "WIRE-0178",
-        "group": "hard negative",
-        "name": "Tarek Al-Rashid",
-        "dob": "1989-02-19",
-        "country": "SA",
-        "decision": "REVIEW",
-        "score": 0.306,
-        "matched": "Muhammad Agha Ahmed Rashdi QATIRJI",
-        "listed_dob": "1991-01-01",
-        "listed_countries": [
-          "AE",
-          "SY"
-        ]
-      },
-      {
-        "wire": "WIRE-0179",
-        "group": "hard negative",
-        "name": "Mohammed Ibrahim Al-Masri",
-        "dob": "1995-08-12",
-        "country": "JO",
-        "decision": "BLOCK",
-        "score": 0.7714,
-        "matched": "Bashir Mohamed MAHAMOUD",
-        "listed_dob": null,
-        "listed_countries": [
-          "SO"
-        ]
-      },
-      {
-        "wire": "WIRE-0180",
-        "group": "hard negative",
-        "name": "Mohammed Ibrahim Al-Masri",
-        "dob": "1988-03-29",
-        "country": "AE",
-        "decision": "BLOCK",
-        "score": 0.858,
-        "matched": "Milad MANSURI",
-        "listed_dob": "1989-09-11",
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0181",
-        "group": "hard negative",
-        "name": "Muhammad Ibrahim Al-Masri",
-        "dob": "1992-10-04",
-        "country": "KW",
-        "decision": "BLOCK",
-        "score": 0.772,
-        "matched": "Bashir Mohamed MAHAMOUD",
-        "listed_dob": null,
-        "listed_countries": [
-          "SO"
-        ]
-      },
-      {
-        "wire": "WIRE-0182",
-        "group": "hard negative",
-        "name": "Ahmed Abdullah Al-Baghdadi",
-        "dob": "1996-01-17",
-        "country": "OM",
-        "decision": "BLOCK",
-        "score": 0.8297,
-        "matched": "Hussein Ahmad ABDALLAH",
-        "listed_dob": "1996-02-11",
-        "listed_countries": [
-          "LB"
-        ]
-      },
-      {
-        "wire": "WIRE-0183",
-        "group": "hard negative",
-        "name": "Ahmed Abdullah Al-Baghdadi",
-        "dob": "1993-07-22",
-        "country": "BH",
-        "decision": "REVIEW",
-        "score": 0.6132,
-        "matched": "Ali AGHA-AHMADI",
-        "listed_dob": null,
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0184",
-        "group": "hard negative",
-        "name": "Sergei Lavrov",
-        "dob": "1992-05-14",
-        "country": "DE",
-        "decision": "REVIEW",
-        "score": 0.4698,
-        "matched": "Sergey LAVROV",
-        "listed_dob": "1950-03-21",
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0185",
-        "group": "hard negative",
-        "name": "Sergey Lavrov",
-        "dob": "1989-11-08",
-        "country": "US",
-        "decision": "REVIEW",
-        "score": 0.5156,
-        "matched": "Anton Konstantinovich LAVRENTIEV",
-        "listed_dob": "1989-04-09",
-        "listed_countries": [
-          "BY"
-        ]
-      },
-      {
-        "wire": "WIRE-0186",
-        "group": "hard negative",
-        "name": "Viktor But",
-        "dob": "1997-04-03",
-        "country": "PL",
-        "decision": "REVIEW",
-        "score": 0.3361,
-        "matched": "Tatiana Viktorovna BUTSKAYA",
-        "listed_dob": "1975-05-08",
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0188",
-        "group": "hard negative",
-        "name": "Hassan Nasrallah",
-        "dob": "1994-12-11",
-        "country": "CA",
-        "decision": "BLOCK",
-        "score": 0.7525,
-        "matched": "Hasen NASYM",
-        "listed_dob": "1994-08-08",
-        "listed_countries": [
-          "MV"
-        ]
-      },
-      {
-        "wire": "WIRE-0189",
-        "group": "hard negative",
-        "name": "Hasan Nasrallah",
-        "dob": "1990-02-28",
-        "country": "AU",
-        "decision": "REVIEW",
-        "score": 0.4912,
-        "matched": "Ghassan NASR EL DIN GHASSAN",
-        "listed_dob": "1962-12-13",
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0190",
-        "group": "hard negative",
-        "name": "Dmitry Medvedev",
-        "dob": "1995-06-30",
-        "country": "IL",
-        "decision": "BLOCK",
-        "score": 0.9948,
-        "matched": "Ilya Dmitrievich MEDVEDEV",
-        "listed_dob": "1995-08-03",
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0191",
-        "group": "hard negative",
-        "name": "Dmitri Medvedev",
-        "dob": "1991-01-15",
-        "country": "GB",
-        "decision": "REVIEW",
-        "score": 0.6192,
-        "matched": "Ilya Dmitrievich MEDVEDEV",
-        "listed_dob": "1995-08-03",
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0192",
-        "group": "hard negative",
-        "name": "Oleg Deripaska",
-        "dob": "1996-08-21",
-        "country": "US",
-        "decision": "REVIEW",
-        "score": 0.4397,
-        "matched": "Oleg Vladimirovich DERIPASKA",
-        "listed_dob": "1968-01-02",
-        "listed_countries": [
-          "RU",
-          "GB",
-          "CY"
-        ]
-      },
-      {
-        "wire": "WIRE-0193",
-        "group": "hard negative",
-        "name": "Rami Makhlouf",
-        "dob": "1995-03-09",
-        "country": "FR",
-        "decision": "REVIEW",
-        "score": 0.4194,
-        "matched": "Ryan Hassan MAKLED",
-        "listed_dob": "1993-10-25",
-        "listed_countries": [
-          "LB"
-        ]
-      },
-      {
-        "wire": "WIRE-0194",
-        "group": "hard negative",
-        "name": "Bashar Al-Assad",
-        "dob": "1993-10-27",
-        "country": "SE",
-        "decision": "REVIEW",
-        "score": 0.5597,
-        "matched": "Ehsan Saidi NASAB",
-        "listed_dob": "1994-09-23",
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0195",
-        "group": "hard negative",
-        "name": "Aleksandr Lukashenko",
-        "dob": "1994-07-14",
-        "country": "LT",
-        "decision": "REVIEW",
-        "score": 0.4607,
-        "matched": "Dmitry Aleksandrovich LUKASHENKO",
-        "listed_dob": "1980-03-23",
-        "listed_countries": [
-          "BY"
-        ]
-      },
-      {
-        "wire": "WIRE-0196",
-        "group": "hard negative",
-        "name": "Yevgeny Prigozhin",
-        "dob": "1996-11-02",
-        "country": "EE",
-        "decision": "REVIEW",
-        "score": 0.4989,
-        "matched": "Andrey Yevgenyevich PURGIN",
-        "listed_dob": "1972-01-26",
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0197",
-        "group": "hard negative",
-        "name": "Ramzan Kadyrov",
-        "dob": "1998-05-19",
-        "country": "KZ",
-        "decision": "REVIEW",
-        "score": 0.4289,
-        "matched": "Ramzan Akhmatovich KADYROV",
-        "listed_dob": "1976-10-05",
-        "listed_countries": [
-          "RU",
-          "AE"
-        ]
-      },
-      {
-        "wire": "WIRE-0198",
-        "group": "hard negative",
-        "name": "Qasim Suleimani",
-        "dob": "1992-09-01",
-        "country": "TR",
-        "decision": "BLOCK",
-        "score": 0.8014,
-        "matched": "Ali QASIR",
-        "listed_dob": "1992-07-29",
-        "listed_countries": [
-          "IR",
-          "LB"
-        ]
-      },
-      {
-        "wire": "WIRE-0199",
-        "group": "hard negative",
-        "name": "Mohammed Ibrahim",
-        "dob": "1985-04-10",
-        "country": "IN",
-        "decision": "BLOCK",
-        "score": 0.8252,
-        "matched": "Bashir Mohamed MOHAMOUD",
-        "listed_dob": null,
-        "listed_countries": [
-          "SO"
-        ]
-      },
-      {
-        "wire": "WIRE-0200",
-        "group": "hard negative",
-        "name": "Ahmed Abdullah",
-        "dob": "1987-12-05",
-        "country": "MY",
-        "decision": "REVIEW",
-        "score": 0.6728,
-        "matched": "Azadeh ABDOLALIPUR",
-        "listed_dob": "1988-09-11",
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0201",
-        "group": "hard negative",
-        "name": "Rostov Oil Company OJSC",
-        "dob": null,
-        "country": "RU",
-        "decision": "BLOCK",
-        "score": 0.9431,
-        "matched": "ROSTVERTOL PAO",
-        "listed_dob": null,
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0202",
-        "group": "hard negative",
-        "name": "Rossiya Oil Company OJSC",
-        "dob": null,
-        "country": "RU",
-        "decision": "BLOCK",
-        "score": 1.0,
-        "matched": "BANK ROSSIYA",
-        "listed_dob": null,
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0203",
-        "group": "hard negative",
-        "name": "Romashka Oil Company OJSC",
-        "dob": null,
-        "country": "KZ",
-        "decision": "BLOCK",
-        "score": 0.897,
-        "matched": "ROSHAK",
-        "listed_dob": null,
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0204",
-        "group": "hard negative",
-        "name": "Rosenergo Oil Company OJSC",
-        "dob": null,
-        "country": "RU",
-        "decision": "BLOCK",
-        "score": 0.8964,
-        "matched": "ROSGEO",
-        "listed_dob": null,
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0205",
-        "group": "hard negative",
-        "name": "Maharaja Air General Aviation Co",
-        "dob": null,
-        "country": "IN",
-        "decision": "BLOCK",
-        "score": 0.8721,
-        "matched": "MEHR AIRWAYS",
-        "listed_dob": null,
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0206",
-        "group": "hard negative",
-        "name": "Mahaba Air General Aviation Co",
-        "dob": null,
-        "country": "AE",
-        "decision": "BLOCK",
-        "score": 0.8854,
-        "matched": "MAHAN AIR",
-        "listed_dob": null,
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0207",
-        "group": "hard negative",
-        "name": "Mahogany Air General Aviation Co",
-        "dob": null,
-        "country": "SG",
-        "decision": "BLOCK",
-        "score": 0.9184,
-        "matched": "MAHAN AIR",
-        "listed_dob": null,
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0208",
-        "group": "hard negative",
-        "name": "Maharani Air General Aviation Co",
-        "dob": null,
-        "country": "IN",
-        "decision": "BLOCK",
-        "score": 0.9591,
-        "matched": "GLOBAL MAHARANI",
-        "listed_dob": null,
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0209",
-        "group": "hard negative",
-        "name": "Al-Manar Global Trading LLC",
-        "dob": null,
-        "country": "AE",
-        "decision": "BLOCK",
-        "score": 0.9789,
-        "matched": "MANAURE",
-        "listed_dob": null,
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0210",
-        "group": "hard negative",
-        "name": "Al-Nahda Global Trading LLC",
-        "dob": null,
-        "country": "OM",
-        "decision": "REVIEW",
-        "score": 0.6784,
-        "matched": "TORDAN INDUSTRY LIMITED",
-        "listed_dob": null,
-        "listed_countries": [
-          "CN",
-          "HK"
-        ]
-      },
-      {
-        "wire": "WIRE-0211",
-        "group": "hard negative",
-        "name": "Al-Nيل Global Trading LLC",
-        "dob": null,
-        "country": "EG",
-        "decision": "BLOCK",
-        "score": 0.9788,
-        "matched": "NILE",
-        "listed_dob": null,
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0212",
-        "group": "hard negative",
-        "name": "Al-Nasr Global Trading LLC",
-        "dob": null,
-        "country": "QA",
-        "decision": "BLOCK",
-        "score": 0.968,
-        "matched": "MULLAH NAZIR GROUP",
-        "listed_dob": null,
-        "listed_countries": [
-          "PK",
-          "AF"
-        ]
-      },
-      {
-        "wire": "WIRE-0213",
-        "group": "hard negative",
-        "name": "Al-Naeem Global Trading LLC",
-        "dob": null,
-        "country": "BH",
-        "decision": "BLOCK",
-        "score": 0.9635,
-        "matched": "NIIME, AO",
-        "listed_dob": null,
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0214",
-        "group": "hard negative",
-        "name": "Korea Daesong General Corporation",
-        "dob": null,
-        "country": "KR",
-        "decision": "BLOCK",
-        "score": 0.9982,
-        "matched": "KOREA DAESONG GENERAL TRADING CORPORATION",
-        "listed_dob": null,
-        "listed_countries": [
-          "KP"
-        ]
-      },
-      {
-        "wire": "WIRE-0215",
-        "group": "hard negative",
-        "name": "Korea Halla General Corporation",
-        "dob": null,
-        "country": "KR",
-        "decision": "BLOCK",
-        "score": 0.8518,
-        "matched": "HALEEL LTD",
-        "listed_dob": null,
-        "listed_countries": [
-          "CY"
-        ]
-      },
-      {
-        "wire": "WIRE-0216",
-        "group": "hard negative",
-        "name": "Korea Kumgang General Corporation",
-        "dob": null,
-        "country": "KR",
-        "decision": "BLOCK",
-        "score": 0.9334,
-        "matched": "KOREA KUMSAN TRADING CORPORATION",
-        "listed_dob": null,
-        "listed_countries": [
-          "KP"
-        ]
-      },
-      {
-        "wire": "WIRE-0217",
-        "group": "hard negative",
-        "name": "Korea Taedong General Corporation",
-        "dob": null,
-        "country": "KR",
-        "decision": "BLOCK",
-        "score": 0.9574,
-        "matched": "KOREA TAESONG TRADING COMPANY",
-        "listed_dob": null,
-        "listed_countries": [
-          "KP"
-        ]
-      },
-      {
-        "wire": "WIRE-0218",
-        "group": "hard negative",
-        "name": "Gazstroibank JSC",
-        "dob": null,
-        "country": "KZ",
-        "decision": "BLOCK",
-        "score": 0.9316,
-        "matched": "GAZTRON CORP",
-        "listed_dob": null,
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0219",
-        "group": "hard negative",
-        "name": "Gazinvestbank JSC",
-        "dob": null,
-        "country": "AM",
-        "decision": "BLOCK",
-        "score": 0.88,
-        "matched": "GAZ JSC",
-        "listed_dob": null,
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0220",
-        "group": "hard negative",
-        "name": "Gazenergobank JSC",
-        "dob": null,
-        "country": "UZ",
-        "decision": "BLOCK",
-        "score": 0.88,
-        "matched": "GAZ JSC",
-        "listed_dob": null,
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0221",
-        "group": "hard negative",
-        "name": "Rostov Oil Company OJSC",
-        "dob": null,
-        "country": "RU",
-        "decision": "BLOCK",
-        "score": 0.9431,
-        "matched": "ROSTVERTOL PAO",
-        "listed_dob": null,
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0222",
-        "group": "hard negative",
-        "name": "Rossiya Oil Company OJSC",
-        "dob": null,
-        "country": "RU",
-        "decision": "BLOCK",
-        "score": 1.0,
-        "matched": "BANK ROSSIYA",
-        "listed_dob": null,
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0223",
-        "group": "hard negative",
-        "name": "Romashka Oil Company OJSC",
-        "dob": null,
-        "country": "KZ",
-        "decision": "BLOCK",
-        "score": 0.897,
-        "matched": "ROSHAK",
-        "listed_dob": null,
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0224",
-        "group": "hard negative",
-        "name": "Rosenergo Oil Company OJSC",
-        "dob": null,
-        "country": "RU",
-        "decision": "BLOCK",
-        "score": 0.8964,
-        "matched": "ROSGEO",
-        "listed_dob": null,
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0225",
-        "group": "hard negative",
-        "name": "Maharaja Air General Aviation Co",
-        "dob": null,
-        "country": "IN",
-        "decision": "BLOCK",
-        "score": 0.8721,
-        "matched": "MEHR AIRWAYS",
-        "listed_dob": null,
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0226",
-        "group": "hard negative",
-        "name": "Mahaba Air General Aviation Co",
-        "dob": null,
-        "country": "AE",
-        "decision": "BLOCK",
-        "score": 0.8854,
-        "matched": "MAHAN AIR",
-        "listed_dob": null,
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0227",
-        "group": "hard negative",
-        "name": "Mahogany Air General Aviation Co",
-        "dob": null,
-        "country": "SG",
-        "decision": "BLOCK",
-        "score": 0.9184,
-        "matched": "MAHAN AIR",
-        "listed_dob": null,
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0228",
-        "group": "hard negative",
-        "name": "Maharani Air General Aviation Co",
-        "dob": null,
-        "country": "IN",
-        "decision": "BLOCK",
-        "score": 0.9591,
-        "matched": "GLOBAL MAHARANI",
-        "listed_dob": null,
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0229",
-        "group": "hard negative",
-        "name": "Al-Manar Global Trading LLC",
-        "dob": null,
-        "country": "AE",
-        "decision": "BLOCK",
-        "score": 0.9789,
-        "matched": "MANAURE",
-        "listed_dob": null,
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0230",
-        "group": "hard negative",
-        "name": "Al-Nahda Global Trading LLC",
-        "dob": null,
-        "country": "OM",
-        "decision": "REVIEW",
-        "score": 0.6784,
-        "matched": "TORDAN INDUSTRY LIMITED",
-        "listed_dob": null,
-        "listed_countries": [
-          "CN",
-          "HK"
-        ]
-      },
-      {
-        "wire": "WIRE-0231",
-        "group": "hard negative",
-        "name": "Al-Nيل Global Trading LLC",
-        "dob": null,
-        "country": "EG",
-        "decision": "BLOCK",
-        "score": 0.9788,
-        "matched": "NILE",
-        "listed_dob": null,
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0232",
-        "group": "hard negative",
-        "name": "Al-Nasr Global Trading LLC",
-        "dob": null,
-        "country": "QA",
-        "decision": "BLOCK",
-        "score": 0.968,
-        "matched": "MULLAH NAZIR GROUP",
-        "listed_dob": null,
-        "listed_countries": [
-          "PK",
-          "AF"
-        ]
-      },
-      {
-        "wire": "WIRE-0233",
-        "group": "hard negative",
-        "name": "Al-Naeem Global Trading LLC",
-        "dob": null,
-        "country": "BH",
-        "decision": "BLOCK",
-        "score": 0.9635,
-        "matched": "NIIME, AO",
-        "listed_dob": null,
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0234",
-        "group": "hard negative",
-        "name": "Korea Daesong General Corporation",
-        "dob": null,
-        "country": "KR",
-        "decision": "BLOCK",
-        "score": 0.9982,
-        "matched": "KOREA DAESONG GENERAL TRADING CORPORATION",
-        "listed_dob": null,
-        "listed_countries": [
-          "KP"
-        ]
-      },
-      {
-        "wire": "WIRE-0235",
-        "group": "hard negative",
-        "name": "Korea Halla General Corporation",
-        "dob": null,
-        "country": "KR",
-        "decision": "BLOCK",
-        "score": 0.8518,
-        "matched": "HALEEL LTD",
-        "listed_dob": null,
-        "listed_countries": [
-          "CY"
-        ]
-      },
-      {
-        "wire": "WIRE-0236",
-        "group": "hard negative",
-        "name": "Korea Kumgang General Corporation",
-        "dob": null,
-        "country": "KR",
-        "decision": "BLOCK",
-        "score": 0.9334,
-        "matched": "KOREA KUMSAN TRADING CORPORATION",
-        "listed_dob": null,
-        "listed_countries": [
-          "KP"
-        ]
-      },
-      {
-        "wire": "WIRE-0237",
-        "group": "hard negative",
-        "name": "Korea Taedong General Corporation",
-        "dob": null,
-        "country": "KR",
-        "decision": "BLOCK",
-        "score": 0.9574,
-        "matched": "KOREA TAESONG TRADING COMPANY",
-        "listed_dob": null,
-        "listed_countries": [
-          "KP"
-        ]
-      },
-      {
-        "wire": "WIRE-0238",
-        "group": "hard negative",
-        "name": "Gazstroibank JSC",
-        "dob": null,
-        "country": "KZ",
-        "decision": "BLOCK",
-        "score": 0.9316,
-        "matched": "GAZTRON CORP",
-        "listed_dob": null,
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0239",
-        "group": "hard negative",
-        "name": "Gazinvestbank JSC",
-        "dob": null,
-        "country": "AM",
-        "decision": "BLOCK",
-        "score": 0.88,
-        "matched": "GAZ JSC",
-        "listed_dob": null,
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0240",
-        "group": "hard negative",
-        "name": "Gazenergobank JSC",
-        "dob": null,
-        "country": "UZ",
-        "decision": "BLOCK",
-        "score": 0.88,
-        "matched": "GAZ JSC",
-        "listed_dob": null,
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0241",
-        "group": "hard negative",
-        "name": "Emerald Bosporus Shipping Co",
-        "dob": null,
-        "country": "TR",
-        "decision": "BLOCK",
-        "score": 0.7958,
-        "matched": "EMERALD FZE",
-        "listed_dob": null,
-        "listed_countries": [
-          "AE"
-        ]
-      },
-      {
-        "wire": "WIRE-0242",
-        "group": "hard negative",
-        "name": "Emerald Bosporus Shipping Ltd",
-        "dob": null,
-        "country": "TR",
-        "decision": "BLOCK",
-        "score": 0.7958,
-        "matched": "EMERALD FZE",
-        "listed_dob": null,
-        "listed_countries": [
-          "AE"
-        ]
-      },
-      {
-        "wire": "WIRE-0243",
-        "group": "hard negative",
-        "name": "Emerald Bosporus Shipping Company",
-        "dob": null,
-        "country": "TR",
-        "decision": "BLOCK",
-        "score": 0.7958,
-        "matched": "EMERALD FZE",
-        "listed_dob": null,
-        "listed_countries": [
-          "AE"
-        ]
-      },
-      {
-        "wire": "WIRE-0244",
-        "group": "hard negative",
-        "name": "Helvetia Alpine Precision AG",
-        "dob": null,
-        "country": "CH",
-        "decision": "REVIEW",
-        "score": 0.7169,
-        "matched": "PARISAN",
-        "listed_dob": null,
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0245",
-        "group": "hard negative",
-        "name": "Helvetia Alpine Precision GmbH",
-        "dob": null,
-        "country": "CH",
-        "decision": "REVIEW",
-        "score": 0.7169,
-        "matched": "PARISAN",
-        "listed_dob": null,
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0246",
-        "group": "hard negative",
-        "name": "Emerald Bosporus Shipping Co",
-        "dob": null,
-        "country": "TR",
-        "decision": "BLOCK",
-        "score": 0.7958,
-        "matched": "EMERALD FZE",
-        "listed_dob": null,
-        "listed_countries": [
-          "AE"
-        ]
-      },
-      {
-        "wire": "WIRE-0247",
-        "group": "hard negative",
-        "name": "Emerald Bosporus Shipping Ltd",
-        "dob": null,
-        "country": "TR",
-        "decision": "BLOCK",
-        "score": 0.7958,
-        "matched": "EMERALD FZE",
-        "listed_dob": null,
-        "listed_countries": [
-          "AE"
-        ]
-      },
-      {
-        "wire": "WIRE-0248",
-        "group": "hard negative",
-        "name": "Emerald Bosporus Shipping Company",
-        "dob": null,
-        "country": "TR",
-        "decision": "BLOCK",
-        "score": 0.7958,
-        "matched": "EMERALD FZE",
-        "listed_dob": null,
-        "listed_countries": [
-          "AE"
-        ]
-      },
-      {
-        "wire": "WIRE-0249",
-        "group": "hard negative",
-        "name": "Helvetia Alpine Precision AG",
-        "dob": null,
-        "country": "CH",
-        "decision": "REVIEW",
-        "score": 0.7169,
-        "matched": "PARISAN",
-        "listed_dob": null,
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0250",
-        "group": "hard negative",
-        "name": "Helvetia Alpine Precision GmbH",
-        "dob": null,
-        "country": "CH",
-        "decision": "REVIEW",
-        "score": 0.7169,
-        "matched": "PARISAN",
-        "listed_dob": null,
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0251",
-        "group": "hard negative",
-        "name": "Emerald Bosporus Shipping Co",
-        "dob": null,
-        "country": "TR",
-        "decision": "BLOCK",
-        "score": 0.7958,
-        "matched": "EMERALD FZE",
-        "listed_dob": null,
-        "listed_countries": [
-          "AE"
-        ]
-      },
-      {
-        "wire": "WIRE-0252",
-        "group": "hard negative",
-        "name": "Emerald Bosporus Shipping Ltd",
-        "dob": null,
-        "country": "TR",
-        "decision": "BLOCK",
-        "score": 0.7958,
-        "matched": "EMERALD FZE",
-        "listed_dob": null,
-        "listed_countries": [
-          "AE"
-        ]
-      },
-      {
-        "wire": "WIRE-0253",
-        "group": "hard negative",
-        "name": "Emerald Bosporus Shipping Company",
-        "dob": null,
-        "country": "TR",
-        "decision": "BLOCK",
-        "score": 0.7958,
-        "matched": "EMERALD FZE",
-        "listed_dob": null,
-        "listed_countries": [
-          "AE"
-        ]
-      },
-      {
-        "wire": "WIRE-0254",
-        "group": "hard negative",
-        "name": "Helvetia Alpine Precision AG",
-        "dob": null,
-        "country": "CH",
-        "decision": "REVIEW",
-        "score": 0.7169,
-        "matched": "PARISAN",
-        "listed_dob": null,
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0255",
-        "group": "hard negative",
-        "name": "Helvetia Alpine Precision GmbH",
-        "dob": null,
-        "country": "CH",
-        "decision": "REVIEW",
-        "score": 0.7169,
-        "matched": "PARISAN",
-        "listed_dob": null,
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0256",
-        "group": "hard negative",
-        "name": "Emerald Bosporus Shipping Co",
-        "dob": null,
-        "country": "TR",
-        "decision": "BLOCK",
-        "score": 0.7958,
-        "matched": "EMERALD FZE",
-        "listed_dob": null,
-        "listed_countries": [
-          "AE"
-        ]
-      },
-      {
-        "wire": "WIRE-0257",
-        "group": "hard negative",
-        "name": "Emerald Bosporus Shipping Ltd",
-        "dob": null,
-        "country": "TR",
-        "decision": "BLOCK",
-        "score": 0.7958,
-        "matched": "EMERALD FZE",
-        "listed_dob": null,
-        "listed_countries": [
-          "AE"
-        ]
-      },
-      {
-        "wire": "WIRE-0258",
-        "group": "hard negative",
-        "name": "Emerald Bosporus Shipping Company",
-        "dob": null,
-        "country": "TR",
-        "decision": "BLOCK",
-        "score": 0.7958,
-        "matched": "EMERALD FZE",
-        "listed_dob": null,
-        "listed_countries": [
-          "AE"
-        ]
-      },
-      {
-        "wire": "WIRE-0259",
-        "group": "hard negative",
-        "name": "Helvetia Alpine Precision AG",
-        "dob": null,
-        "country": "CH",
-        "decision": "REVIEW",
-        "score": 0.7169,
-        "matched": "PARISAN",
-        "listed_dob": null,
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0260",
-        "group": "hard negative",
-        "name": "Helvetia Alpine Precision GmbH",
-        "dob": null,
-        "country": "CH",
-        "decision": "REVIEW",
-        "score": 0.7169,
-        "matched": "PARISAN",
-        "listed_dob": null,
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0261",
-        "group": "hard negative",
-        "name": "Emerald Bosporus Shipping Co",
-        "dob": null,
-        "country": "TR",
-        "decision": "BLOCK",
-        "score": 0.7958,
-        "matched": "EMERALD FZE",
-        "listed_dob": null,
-        "listed_countries": [
-          "AE"
-        ]
-      },
-      {
-        "wire": "WIRE-0262",
-        "group": "hard negative",
-        "name": "Emerald Bosporus Shipping Ltd",
-        "dob": null,
-        "country": "TR",
-        "decision": "BLOCK",
-        "score": 0.7958,
-        "matched": "EMERALD FZE",
-        "listed_dob": null,
-        "listed_countries": [
-          "AE"
-        ]
-      },
-      {
-        "wire": "WIRE-0263",
-        "group": "hard negative",
-        "name": "Emerald Bosporus Shipping Company",
-        "dob": null,
-        "country": "TR",
-        "decision": "BLOCK",
-        "score": 0.7958,
-        "matched": "EMERALD FZE",
-        "listed_dob": null,
-        "listed_countries": [
-          "AE"
-        ]
-      },
-      {
-        "wire": "WIRE-0264",
-        "group": "hard negative",
-        "name": "Helvetia Alpine Precision AG",
-        "dob": null,
-        "country": "CH",
-        "decision": "REVIEW",
-        "score": 0.7169,
-        "matched": "PARISAN",
-        "listed_dob": null,
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0265",
-        "group": "hard negative",
-        "name": "Helvetia Alpine Precision GmbH",
-        "dob": null,
-        "country": "CH",
-        "decision": "REVIEW",
-        "score": 0.7169,
-        "matched": "PARISAN",
-        "listed_dob": null,
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0266",
-        "group": "hard negative",
-        "name": "Pacific Rim Semiconductor Corp",
-        "dob": null,
-        "country": "SG",
-        "decision": "BLOCK",
-        "score": 0.7738,
-        "matched": "MOHAMMED'S ARMY",
-        "listed_dob": null,
-        "listed_countries": [
-          "PK"
-        ]
-      },
-      {
-        "wire": "WIRE-0267",
-        "group": "hard negative",
-        "name": "Rajesh Kumar Sharma",
-        "dob": "1982-05-19",
-        "country": "IN",
-        "decision": "REVIEW",
-        "score": 0.5381,
-        "matched": "Kirill Nikolaevich SHAMALOV",
-        "listed_dob": "1982-03-22",
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0268",
-        "group": "hard negative",
-        "name": "Smt. Priya Darshini Nair",
-        "dob": "1990-11-04",
-        "country": "IN",
-        "decision": "REVIEW",
-        "score": 0.607,
-        "matched": "Yuliya Nikolayevna DROZHZHINA",
-        "listed_dob": "1990-03-01",
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0269",
-        "group": "hard negative",
-        "name": "Siemens Energy Solutions GmbH",
-        "dob": null,
-        "country": "DE",
-        "decision": "BLOCK",
-        "score": 0.8636,
-        "matched": "SINEZIS OOO",
-        "listed_dob": null,
-        "listed_countries": [
-          "BY"
-        ]
-      },
-      {
-        "wire": "WIRE-0270",
-        "group": "hard negative",
-        "name": "Tata Consultancy Services Ltd",
-        "dob": null,
-        "country": "IN",
-        "decision": "BLOCK",
-        "score": 0.8902,
-        "matched": "T C CAPITAL CO LTD",
-        "listed_dob": null,
-        "listed_countries": [
-          "KH"
-        ]
-      },
-      {
-        "wire": "WIRE-0271",
-        "group": "hard negative",
-        "name": "Nippon Yusen Kabushiki Kaisha",
-        "dob": null,
-        "country": "JP",
-        "decision": "REVIEW",
-        "score": 0.7316,
-        "matched": "KISH INTERNATIONAL BANK",
-        "listed_dob": null,
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0272",
-        "group": "hard negative",
-        "name": "Maersk Line Container Logistics BV",
-        "dob": null,
-        "country": "NL",
-        "decision": "BLOCK",
-        "score": 0.8379,
-        "matched": "MARS INVESTMENT L.L.C",
-        "listed_dob": null,
-        "listed_countries": [
-          "AE"
-        ]
-      },
-      {
-        "wire": "WIRE-0273",
-        "group": "hard negative",
-        "name": "Bajaj Finserv Treasury Ltd",
-        "dob": null,
-        "country": "IN",
-        "decision": "REVIEW",
-        "score": 0.7182,
-        "matched": "FINESSE GLOBAL TRADING LIMITED",
-        "listed_dob": null,
-        "listed_countries": [
-          "CN",
-          "HK"
-        ]
-      },
-      {
-        "wire": "WIRE-0274",
-        "group": "hard negative",
-        "name": "Larsen & Toubro Hydrocarbon Engineering",
-        "dob": null,
-        "country": "IN",
-        "decision": "REVIEW",
-        "score": 0.7169,
-        "matched": "TAIBER OOO",
-        "listed_dob": null,
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0275",
-        "group": "hard negative",
-        "name": "Emirates SkyCargo Logistics FZE",
-        "dob": null,
-        "country": "AE",
-        "decision": "BLOCK",
-        "score": 0.78,
-        "matched": "STAR MERIT GLOBAL LIMITED",
-        "listed_dob": null,
-        "listed_countries": [
-          "KH",
-          "VG"
-        ]
-      },
-      {
-        "wire": "WIRE-0276",
-        "group": "hard negative",
-        "name": "Orascom Construction Industries SAE",
-        "dob": null,
-        "country": "EG",
-        "decision": "BLOCK",
-        "score": 0.7791,
-        "matched": "SIAS INVESTMENT PVT LTD",
-        "listed_dob": null,
-        "listed_countries": [
-          "MV"
-        ]
-      },
-      {
-        "wire": "WIRE-0277",
-        "group": "hard negative",
-        "name": "Sabanci Industrial Holdings AS",
-        "dob": null,
-        "country": "TR",
-        "decision": "BLOCK",
-        "score": 0.8631,
-        "matched": "SEABASS",
-        "listed_dob": null,
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0278",
-        "group": "hard negative",
-        "name": "Keppel Offshore & Marine Ltd",
-        "dob": null,
-        "country": "SG",
-        "decision": "BLOCK",
-        "score": 0.7702,
-        "matched": "CAPELLA",
-        "listed_dob": null,
-        "listed_countries": []
-      },
-      {
-        "wire": "WIRE-0279",
-        "group": "hard negative",
-        "name": "posco International Trading Corp",
-        "dob": null,
-        "country": "KR",
-        "decision": "BLOCK",
-        "score": 0.9671,
-        "matched": "PASK",
-        "listed_dob": null,
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0280",
-        "group": "hard negative",
-        "name": "Sumitomo Chemical Asia Pte Ltd",
-        "dob": null,
-        "country": "SG",
-        "decision": "BLOCK",
-        "score": 0.8082,
-        "matched": "ASIA TRADING & CONSTRUCTION PTE LTD",
-        "listed_dob": null,
-        "listed_countries": [
-          "SG"
-        ]
-      },
-      {
-        "wire": "WIRE-0282",
-        "group": "hard negative",
-        "name": "Jean-Pierre Laurent",
-        "dob": "1975-08-29",
-        "country": "FR",
-        "decision": "REVIEW",
-        "score": 0.3799,
-        "matched": "Janna Viktorovna ZOLOTOVA",
-        "listed_dob": "1976-01-25",
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0283",
-        "group": "hard negative",
-        "name": "Hiroshi Takahashi",
-        "dob": "1984-01-22",
-        "country": "JP",
-        "decision": "REVIEW",
-        "score": 0.4661,
-        "matched": "Muhammad HARIS",
-        "listed_dob": "1986-01-16",
-        "listed_countries": [
-          "PK"
-        ]
-      },
-      {
-        "wire": "WIRE-0284",
-        "group": "hard negative",
-        "name": "Fatima Al-Zahra Mansouri",
-        "dob": "1991-07-16",
-        "country": "MA",
-        "decision": "BLOCK",
-        "score": 0.7632,
-        "matched": "Farhad FATEMI",
-        "listed_dob": "1990-09-21",
-        "listed_countries": [
-          "IR"
-        ]
-      },
-      {
-        "wire": "WIRE-0285",
-        "group": "hard negative",
-        "name": "Kofi Mensah Osei",
-        "dob": "1986-09-03",
-        "country": "GH",
-        "decision": "REVIEW",
-        "score": 0.5101,
-        "matched": "Su Il KIM",
-        "listed_dob": "1985-03-04",
-        "listed_countries": [
-          "VN",
-          "KP"
-        ]
-      },
-      {
-        "wire": "WIRE-0286",
-        "group": "hard negative",
-        "name": "Adebayo Oluwaseun Balogun",
-        "dob": "1988-02-11",
-        "country": "NG",
-        "decision": "REVIEW",
-        "score": 0.6882,
-        "matched": "Aleksei BELAN",
-        "listed_dob": "1987-06-27",
-        "listed_countries": [
-          "RU",
-          "LV"
-        ]
-      },
-      {
-        "wire": "WIRE-0287",
-        "group": "hard negative",
-        "name": "Chen Wei Ming",
-        "dob": "1980-12-25",
-        "country": "TW",
-        "decision": "BLOCK",
-        "score": 0.8912,
-        "matched": "Mingfu CHEN",
-        "listed_dob": "1980-04-30",
-        "listed_countries": [
-          "CN"
-        ]
-      },
-      {
-        "wire": "WIRE-0289",
-        "group": "hard negative",
-        "name": "Svetlana Ivanovna Morozova",
-        "dob": "1987-06-19",
-        "country": "KZ",
-        "decision": "REVIEW",
-        "score": 0.4795,
-        "matched": "Vladimir Aleksandrovich IVANOV",
-        "listed_dob": "1987-05-21",
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0291",
-        "group": "hard negative",
-        "name": "Nordea Corporate Markets AB",
-        "dob": null,
-        "country": "SE",
-        "decision": "BLOCK",
-        "score": 0.7898,
-        "matched": "OOO NORD MARINE",
-        "listed_dob": null,
-        "listed_countries": [
-          "RU"
-        ]
-      },
-      {
-        "wire": "WIRE-0292",
-        "group": "hard negative",
-        "name": "Standard Chartered Trade Services",
-        "dob": null,
-        "country": "GB",
-        "decision": "BLOCK",
-        "score": 0.7644,
-        "matched": "CHENG SHIPPING AND TRADER LIMITED",
-        "listed_dob": null,
-        "listed_countries": [
-          "SC"
-        ]
-      },
-      {
-        "wire": "WIRE-0293",
-        "group": "hard negative",
-        "name": "DBS Vickers Securities Pte Ltd",
-        "dob": null,
-        "country": "SG",
-        "decision": "BLOCK",
-        "score": 0.753,
-        "matched": "V-SHIPPING PTE LTD",
-        "listed_dob": null,
-        "listed_countries": [
-          "SG"
-        ]
-      },
-      {
-        "wire": "WIRE-0294",
-        "group": "hard negative",
-        "name": "Macquarie Infrastructure Partners",
-        "dob": null,
-        "country": "AU",
-        "decision": "REVIEW",
-        "score": 0.7472,
-        "matched": "MAKARUA SHIPPING LTD",
-        "listed_dob": null,
-        "listed_countries": [
-          "VG"
-        ]
-      },
-      {
-        "wire": "WIRE-0295",
-        "group": "hard negative",
-        "name": "Brookfield Renewable Power Inc",
-        "dob": null,
-        "country": "CA",
-        "decision": "REVIEW",
-        "score": 0.7022,
-        "matched": "POWEROY INVESTMENT LIMITED",
-        "listed_dob": null,
-        "listed_countries": [
-          "VG"
-        ]
-      },
-      {
-        "wire": "WIRE-0296",
-        "group": "hard negative",
-        "name": "Petrobras International Braspetro BV",
-        "dob": null,
-        "country": "BR",
-        "decision": "BLOCK",
-        "score": 0.7571,
-        "matched": "PETROPARS INTERNATIONAL FZE",
-        "listed_dob": null,
-        "listed_countries": [
-          "AE"
-        ]
-      },
-      {
-        "wire": "WIRE-0297",
-        "group": "hard negative",
-        "name": "Sasol Synfuels International Pty",
-        "dob": null,
-        "country": "ZA",
-        "decision": "REVIEW",
-        "score": 0.7426,
-        "matched": "AL-SALAH",
-        "listed_dob": null,
-        "listed_countries": [
-          "PS"
-        ]
-      },
-      {
-        "wire": "WIRE-0298",
-        "group": "hard negative",
-        "name": "Cemex Latam Holdings SA",
-        "dob": null,
-        "country": "CO",
-        "decision": "BLOCK",
-        "score": 0.8027,
-        "matched": "CIMEX",
-        "listed_dob": null,
-        "listed_countries": [
-          "MX"
-        ]
-      },
-      {
-        "wire": "WIRE-0299",
-        "group": "hard negative",
-        "name": "Infosys Finacle Digital Banking",
-        "dob": null,
-        "country": "IN",
-        "decision": "REVIEW",
-        "score": 0.7117,
-        "matched": "NEFAZ PAO",
-        "listed_dob": null,
-        "listed_countries": [
-          "RU"
-        ]
-      }
-    ]
-  },
-  "with_weak_akas": {
-    "entries": 19471,
-    "aliases": 24613,
-    "latency_ms_indexed": {
-      "median": 39.41,
-      "p95": 114.58,
-      "max": 262.17
-    },
-    "candidates_per_wire": {
-      "median": 193.0,
-      "max": 549
+      "median": 304.0,
+      "max": 826
     },
     "synthetic_entries_on_real_list": {
       "SDN-001": [
@@ -3039,83 +93,1790 @@
         "BLOCK": 99,
         "REVIEW": 0,
         "CLEAR": 0,
-        "blocked_on_a_one_word_name": 11,
-        "blocked_on_the_right_entry": 94
+        "blocked_on_a_one_word_name": 4,
+        "blocked_on_the_right_entry": 98
       },
       "names a synthetic entry not on the real list": {
         "wires": 21,
-        "BLOCK": 20,
-        "REVIEW": 1,
-        "CLEAR": 0,
-        "blocked_on_a_one_word_name": 4
+        "BLOCK": 4,
+        "REVIEW": 6,
+        "CLEAR": 11,
+        "blocked_on_a_one_word_name": 0
       },
       "shell company (synthetic ownership graph)": {
         "wires": 30,
-        "BLOCK": 24,
-        "REVIEW": 6,
-        "CLEAR": 0,
-        "blocked_on_a_one_word_name": 12
+        "BLOCK": 0,
+        "REVIEW": 23,
+        "CLEAR": 7,
+        "blocked_on_a_one_word_name": 0
       },
       "hard negative": {
         "wires": 150,
-        "BLOCK": 94,
-        "REVIEW": 54,
-        "CLEAR": 2,
-        "blocked_on_a_one_word_name": 48
+        "BLOCK": 23,
+        "REVIEW": 63,
+        "CLEAR": 64,
+        "blocked_on_a_one_word_name": 4
       }
     },
     "listed_wires_not_blocked_on_their_entry": [
-      {
-        "wire": "WIRE-0020",
-        "name": "Gazprombank JSC",
-        "dob": null,
-        "country": "RU",
-        "decision": "BLOCK",
-        "score": 0.8615,
-        "top_match": "OOO GAZPROMMASH",
-        "listed_as": "GAZPROMBANK JOINT STOCK COMPANY",
-        "listed_dob": null
-      },
-      {
-        "wire": "WIRE-0030",
-        "name": "Gazprombank OOO",
-        "dob": null,
-        "country": "RU",
-        "decision": "BLOCK",
-        "score": 0.9415,
-        "top_match": "OOO GAZPROMMASH",
-        "listed_as": "GAZPROMBANK JOINT STOCK COMPANY",
-        "listed_dob": null
-      },
-      {
-        "wire": "WIRE-0051",
-        "name": "حسن نصر الله",
-        "dob": "1960-08-31",
-        "country": "LB",
-        "decision": "BLOCK",
-        "score": 1.0,
-        "top_match": "Nasr AL-ALI",
-        "listed_as": "Hasan NASRALLAH",
-        "listed_dob": "1960-08-31"
-      },
-      {
-        "wire": "WIRE-0075",
-        "name": "Газпромбанк АО",
-        "dob": null,
-        "country": "RU",
-        "decision": "BLOCK",
-        "score": 0.9415,
-        "top_match": "OOO GAZPROMMASH",
-        "listed_as": "GAZPROMBANK JOINT STOCK COMPANY",
-        "listed_dob": null
-      },
       {
         "wire": "WIRE-0105",
         "name": "Muhammed I. Al-Masri",
         "dob": "1963-07-19",
         "country": "PS",
         "decision": "BLOCK",
-        "score": 0.9923,
+        "score": 1.0,
+        "top_match": "Mohammed AL-MASRI",
+        "listed_as": "Abdullah Ahmed ABDULLAH",
+        "listed_dob": "1963"
+      }
+    ],
+    "flagged_wires_outside_listed": [
+      {
+        "wire": "WIRE-0012",
+        "group": "names a synthetic entry not on the real list",
+        "name": "Ahmed Abdullah Al-Baghdadi",
+        "dob": "1971-05-04",
+        "country": "IQ",
+        "decision": "REVIEW",
+        "score": 0.5766,
+        "matched": "Abu Bakr al-Husayni AL-BAGHDADI",
+        "listed_dob": "1971",
+        "listed_countries": [
+          "IQ"
+        ]
+      },
+      {
+        "wire": "WIRE-0016",
+        "group": "names a synthetic entry not on the real list",
+        "name": "Al-Noor Global Trading LLC",
+        "dob": null,
+        "country": "SY",
+        "decision": "BLOCK",
+        "score": 0.7778,
+        "matched": "NOOR 1",
+        "listed_dob": null,
+        "listed_countries": []
+      },
+      {
+        "wire": "WIRE-0028",
+        "group": "names a synthetic entry not on the real list",
+        "name": "Al-Noor Global Trading Limited",
+        "dob": null,
+        "country": "AE",
+        "decision": "BLOCK",
+        "score": 0.8578,
+        "matched": "NOOR 1",
+        "listed_dob": null,
+        "listed_countries": []
+      },
+      {
+        "wire": "WIRE-0044",
+        "group": "names a synthetic entry not on the real list",
+        "name": "अहमद अब्दुल्ला अल बगदादी",
+        "dob": "1971-05-04",
+        "country": "IQ",
+        "decision": "REVIEW",
+        "score": 0.5688,
+        "matched": "Abu Bakr al-Husayni AL-BAGHDADI",
+        "listed_dob": "1971",
+        "listed_countries": [
+          "IQ"
+        ]
+      },
+      {
+        "wire": "WIRE-0057",
+        "group": "names a synthetic entry not on the real list",
+        "name": "أحمد عبدالله البغدادي",
+        "dob": "1971-05-04",
+        "country": "IQ",
+        "decision": "REVIEW",
+        "score": 0.5766,
+        "matched": "Abu Bakr al-Husayni AL-BAGHDADI",
+        "listed_dob": "1971",
+        "listed_countries": [
+          "IQ"
+        ]
+      },
+      {
+        "wire": "WIRE-0060",
+        "group": "names a synthetic entry not on the real list",
+        "name": "شركة النور للتجارة",
+        "dob": null,
+        "country": "SY",
+        "decision": "BLOCK",
+        "score": 0.8682,
+        "matched": "NOOR 1",
+        "listed_dob": null,
+        "listed_countries": []
+      },
+      {
+        "wire": "WIRE-0107",
+        "group": "names a synthetic entry not on the real list",
+        "name": "Ahmed Abdallah Baghdady",
+        "dob": "1971-05-04",
+        "country": "IQ",
+        "decision": "REVIEW",
+        "score": 0.609,
+        "matched": "Abu ABDALLAH",
+        "listed_dob": "1970-05-15",
+        "listed_countries": [
+          "PK"
+        ]
+      },
+      {
+        "wire": "WIRE-0114",
+        "group": "names a synthetic entry not on the real list",
+        "name": "Trading Global Al-Noor LLC",
+        "dob": null,
+        "country": "SY",
+        "decision": "BLOCK",
+        "score": 0.8578,
+        "matched": "NOOR 1",
+        "listed_dob": null,
+        "listed_countries": []
+      },
+      {
+        "wire": "WIRE-0115",
+        "group": "names a synthetic entry not on the real list",
+        "name": "Sharikah Al-Nour Lil-Tijara",
+        "dob": null,
+        "country": "AE",
+        "decision": "REVIEW",
+        "score": 0.7177,
+        "matched": "NOURI PETROCHEMICAL COMPANY",
+        "listed_dob": null,
+        "listed_countries": [
+          "IR"
+        ]
+      },
+      {
+        "wire": "WIRE-0120",
+        "group": "names a synthetic entry not on the real list",
+        "name": "T. Al-Rashid",
+        "dob": "1968-04-12",
+        "country": "SY",
+        "decision": "REVIEW",
+        "score": 0.6296,
+        "matched": "Rachid FETTAR",
+        "listed_dob": "1969-04-16",
+        "listed_countries": [
+          "IT"
+        ]
+      },
+      {
+        "wire": "WIRE-0121",
+        "group": "shell company (synthetic ownership graph)",
+        "name": "Blue Horizon Maritime Logistics Ltd",
+        "dob": null,
+        "country": "VG",
+        "decision": "REVIEW",
+        "score": 0.6954,
+        "matched": "HORIZON",
+        "listed_dob": null,
+        "listed_countries": []
+      },
+      {
+        "wire": "WIRE-0122",
+        "group": "shell company (synthetic ownership graph)",
+        "name": "Blue Horizon Maritime Logistics Limited",
+        "dob": null,
+        "country": "VG",
+        "decision": "REVIEW",
+        "score": 0.6954,
+        "matched": "HORIZON",
+        "listed_dob": null,
+        "listed_countries": []
+      },
+      {
+        "wire": "WIRE-0123",
+        "group": "shell company (synthetic ownership graph)",
+        "name": "Blue Horizon Maritime Logistics",
+        "dob": null,
+        "country": "VG",
+        "decision": "REVIEW",
+        "score": 0.6954,
+        "matched": "HORIZON",
+        "listed_dob": null,
+        "listed_countries": []
+      },
+      {
+        "wire": "WIRE-0124",
+        "group": "shell company (synthetic ownership graph)",
+        "name": "BLUE HORIZON MARITIME LOGISTICS LTD",
+        "dob": null,
+        "country": "CY",
+        "decision": "REVIEW",
+        "score": 0.6954,
+        "matched": "HORIZON",
+        "listed_dob": null,
+        "listed_countries": []
+      },
+      {
+        "wire": "WIRE-0125",
+        "group": "shell company (synthetic ownership graph)",
+        "name": "Blue Horizon Maritime Logistics LLC",
+        "dob": null,
+        "country": "AE",
+        "decision": "REVIEW",
+        "score": 0.6954,
+        "matched": "HORIZON",
+        "listed_dob": null,
+        "listed_countries": []
+      },
+      {
+        "wire": "WIRE-0126",
+        "group": "shell company (synthetic ownership graph)",
+        "name": "Logistics Maritime Blue Horizon Ltd",
+        "dob": null,
+        "country": "VG",
+        "decision": "REVIEW",
+        "score": 0.6954,
+        "matched": "HORIZON",
+        "listed_dob": null,
+        "listed_countries": []
+      },
+      {
+        "wire": "WIRE-0127",
+        "group": "shell company (synthetic ownership graph)",
+        "name": "Aegean Star Petrotech FZE",
+        "dob": null,
+        "country": "AE",
+        "decision": "REVIEW",
+        "score": 0.6212,
+        "matched": "PETROTECH FZE",
+        "listed_dob": null,
+        "listed_countries": [
+          "AE"
+        ]
+      },
+      {
+        "wire": "WIRE-0128",
+        "group": "shell company (synthetic ownership graph)",
+        "name": "Aegean Star Petrotech FZCO",
+        "dob": null,
+        "country": "AE",
+        "decision": "REVIEW",
+        "score": 0.6212,
+        "matched": "PETROTECH FZE",
+        "listed_dob": null,
+        "listed_countries": [
+          "AE"
+        ]
+      },
+      {
+        "wire": "WIRE-0129",
+        "group": "shell company (synthetic ownership graph)",
+        "name": "Aegean Star Petrotech",
+        "dob": null,
+        "country": "AE",
+        "decision": "REVIEW",
+        "score": 0.6212,
+        "matched": "PETROTECH FZE",
+        "listed_dob": null,
+        "listed_countries": [
+          "AE"
+        ]
+      },
+      {
+        "wire": "WIRE-0130",
+        "group": "shell company (synthetic ownership graph)",
+        "name": "AEGEAN STAR PETROTECH FZE",
+        "dob": null,
+        "country": "AE",
+        "decision": "REVIEW",
+        "score": 0.6212,
+        "matched": "PETROTECH FZE",
+        "listed_dob": null,
+        "listed_countries": [
+          "AE"
+        ]
+      },
+      {
+        "wire": "WIRE-0132",
+        "group": "shell company (synthetic ownership graph)",
+        "name": "Petrotech Aegean Star FZE",
+        "dob": null,
+        "country": "AE",
+        "decision": "REVIEW",
+        "score": 0.6212,
+        "matched": "PETROTECH FZE",
+        "listed_dob": null,
+        "listed_countries": [
+          "AE"
+        ]
+      },
+      {
+        "wire": "WIRE-0139",
+        "group": "shell company (synthetic ownership graph)",
+        "name": "Saffron Gulf Petrochemicals DMCC",
+        "dob": null,
+        "country": "AE",
+        "decision": "REVIEW",
+        "score": 0.6002,
+        "matched": "PERSIAN GULF PETROCHEMICAL INDUSTRIES",
+        "listed_dob": null,
+        "listed_countries": [
+          "IR"
+        ]
+      },
+      {
+        "wire": "WIRE-0140",
+        "group": "shell company (synthetic ownership graph)",
+        "name": "Saffron Gulf Petrochemicals FZE",
+        "dob": null,
+        "country": "AE",
+        "decision": "REVIEW",
+        "score": 0.6002,
+        "matched": "PERSIAN GULF PETROCHEMICAL INDUSTRIES",
+        "listed_dob": null,
+        "listed_countries": [
+          "IR"
+        ]
+      },
+      {
+        "wire": "WIRE-0141",
+        "group": "shell company (synthetic ownership graph)",
+        "name": "Saffron Gulf Petrochemicals",
+        "dob": null,
+        "country": "AE",
+        "decision": "REVIEW",
+        "score": 0.6002,
+        "matched": "PERSIAN GULF PETROCHEMICAL INDUSTRIES",
+        "listed_dob": null,
+        "listed_countries": [
+          "IR"
+        ]
+      },
+      {
+        "wire": "WIRE-0142",
+        "group": "shell company (synthetic ownership graph)",
+        "name": "SAFFRON GULF PETROCHEMICALS DMCC",
+        "dob": null,
+        "country": "AE",
+        "decision": "REVIEW",
+        "score": 0.6002,
+        "matched": "PERSIAN GULF PETROCHEMICAL INDUSTRIES",
+        "listed_dob": null,
+        "listed_countries": [
+          "IR"
+        ]
+      },
+      {
+        "wire": "WIRE-0143",
+        "group": "shell company (synthetic ownership graph)",
+        "name": "Saffron Gulf Petrochemicals LLC",
+        "dob": null,
+        "country": "IR",
+        "decision": "REVIEW",
+        "score": 0.6502,
+        "matched": "PERSIAN GULF PETROCHEMICAL INDUSTRIES",
+        "listed_dob": null,
+        "listed_countries": [
+          "IR"
+        ]
+      },
+      {
+        "wire": "WIRE-0144",
+        "group": "shell company (synthetic ownership graph)",
+        "name": "Petrochemicals Saffron Gulf DMCC",
+        "dob": null,
+        "country": "AE",
+        "decision": "REVIEW",
+        "score": 0.6002,
+        "matched": "PERSIAN GULF PETROCHEMICAL INDUSTRIES",
+        "listed_dob": null,
+        "listed_countries": [
+          "IR"
+        ]
+      },
+      {
+        "wire": "WIRE-0145",
+        "group": "shell company (synthetic ownership graph)",
+        "name": "Nordic Baltic Bunker Services AS",
+        "dob": null,
+        "country": "EE",
+        "decision": "REVIEW",
+        "score": 0.6239,
+        "matched": "BALTIC DEVELOPMENT BANK CLOSED JOINT STOCK COMPANY",
+        "listed_dob": null,
+        "listed_countries": [
+          "RU"
+        ]
+      },
+      {
+        "wire": "WIRE-0146",
+        "group": "shell company (synthetic ownership graph)",
+        "name": "Nordic Baltic Bunker Services Ltd",
+        "dob": null,
+        "country": "EE",
+        "decision": "REVIEW",
+        "score": 0.6239,
+        "matched": "BALTIC DEVELOPMENT BANK CLOSED JOINT STOCK COMPANY",
+        "listed_dob": null,
+        "listed_countries": [
+          "RU"
+        ]
+      },
+      {
+        "wire": "WIRE-0147",
+        "group": "shell company (synthetic ownership graph)",
+        "name": "Nordic Baltic Bunker Services",
+        "dob": null,
+        "country": "EE",
+        "decision": "REVIEW",
+        "score": 0.6239,
+        "matched": "BALTIC DEVELOPMENT BANK CLOSED JOINT STOCK COMPANY",
+        "listed_dob": null,
+        "listed_countries": [
+          "RU"
+        ]
+      },
+      {
+        "wire": "WIRE-0148",
+        "group": "shell company (synthetic ownership graph)",
+        "name": "NORDIC BALTIC BUNKER SERVICES AS",
+        "dob": null,
+        "country": "EE",
+        "decision": "REVIEW",
+        "score": 0.6239,
+        "matched": "BALTIC DEVELOPMENT BANK CLOSED JOINT STOCK COMPANY",
+        "listed_dob": null,
+        "listed_countries": [
+          "RU"
+        ]
+      },
+      {
+        "wire": "WIRE-0149",
+        "group": "shell company (synthetic ownership graph)",
+        "name": "Nordic Baltic Bunker Services BV",
+        "dob": null,
+        "country": "NL",
+        "decision": "REVIEW",
+        "score": 0.6239,
+        "matched": "BALTIC DEVELOPMENT BANK CLOSED JOINT STOCK COMPANY",
+        "listed_dob": null,
+        "listed_countries": [
+          "RU"
+        ]
+      },
+      {
+        "wire": "WIRE-0150",
+        "group": "shell company (synthetic ownership graph)",
+        "name": "Bunker Services Nordic Baltic AS",
+        "dob": null,
+        "country": "EE",
+        "decision": "REVIEW",
+        "score": 0.6239,
+        "matched": "BALTIC DEVELOPMENT BANK CLOSED JOINT STOCK COMPANY",
+        "listed_dob": null,
+        "listed_countries": [
+          "RU"
+        ]
+      },
+      {
+        "wire": "WIRE-0154",
+        "group": "hard negative",
+        "name": "Mohammed Ibrahim Al-Masri",
+        "dob": "1995-08-12",
+        "country": "JO",
+        "decision": "REVIEW",
+        "score": 0.4449,
+        "matched": "Mohammed AL-MASRI",
+        "listed_dob": "1963",
+        "listed_countries": [
+          "PS"
+        ]
+      },
+      {
+        "wire": "WIRE-0155",
+        "group": "hard negative",
+        "name": "Mohammed Ibrahim Al-Masri",
+        "dob": "1988-03-29",
+        "country": "AE",
+        "decision": "REVIEW",
+        "score": 0.4946,
+        "matched": "Milad MANSURI",
+        "listed_dob": "1989-09-11",
+        "listed_countries": [
+          "IR"
+        ]
+      },
+      {
+        "wire": "WIRE-0156",
+        "group": "hard negative",
+        "name": "Muhammad Ibrahim Al-Masri",
+        "dob": "1992-10-04",
+        "country": "KW",
+        "decision": "REVIEW",
+        "score": 0.4309,
+        "matched": "Mohammed AL-MASRI",
+        "listed_dob": "1963",
+        "listed_countries": [
+          "PS"
+        ]
+      },
+      {
+        "wire": "WIRE-0157",
+        "group": "hard negative",
+        "name": "Ahmed Abdullah Al-Baghdadi",
+        "dob": "1996-01-17",
+        "country": "OM",
+        "decision": "REVIEW",
+        "score": 0.405,
+        "matched": "Hassan AL-BAGHDADI",
+        "listed_dob": "1961-10-05",
+        "listed_countries": [
+          "LB"
+        ]
+      },
+      {
+        "wire": "WIRE-0158",
+        "group": "hard negative",
+        "name": "Ahmed Abdullah Al-Baghdadi",
+        "dob": "1993-07-22",
+        "country": "BH",
+        "decision": "REVIEW",
+        "score": 0.405,
+        "matched": "Hassan AL-BAGHDADI",
+        "listed_dob": "1961-10-05",
+        "listed_countries": [
+          "LB"
+        ]
+      },
+      {
+        "wire": "WIRE-0159",
+        "group": "hard negative",
+        "name": "Sergei Lavrov",
+        "dob": "1992-05-14",
+        "country": "DE",
+        "decision": "REVIEW",
+        "score": 0.4693,
+        "matched": "Sergey LAVROV",
+        "listed_dob": "1950-03-21",
+        "listed_countries": [
+          "RU"
+        ]
+      },
+      {
+        "wire": "WIRE-0160",
+        "group": "hard negative",
+        "name": "Sergey Lavrov",
+        "dob": "1989-11-08",
+        "country": "US",
+        "decision": "REVIEW",
+        "score": 0.47,
+        "matched": "Sergey LAVROV",
+        "listed_dob": "1950-03-21",
+        "listed_countries": [
+          "RU"
+        ]
+      },
+      {
+        "wire": "WIRE-0161",
+        "group": "hard negative",
+        "name": "Viktor But",
+        "dob": "1997-04-03",
+        "country": "PL",
+        "decision": "REVIEW",
+        "score": 0.5662,
+        "matched": "Viktor Anatolijevitch BOUT",
+        "listed_dob": "1967-01-13",
+        "listed_countries": []
+      },
+      {
+        "wire": "WIRE-0162",
+        "group": "hard negative",
+        "name": "Victor Bout",
+        "dob": "1993-09-19",
+        "country": "FR",
+        "decision": "REVIEW",
+        "score": 0.568,
+        "matched": "Viktor Anatolijevitch BOUT",
+        "listed_dob": "1967-01-13",
+        "listed_countries": []
+      },
+      {
+        "wire": "WIRE-0163",
+        "group": "hard negative",
+        "name": "Hassan Nasrallah",
+        "dob": "1994-12-11",
+        "country": "CA",
+        "decision": "REVIEW",
+        "score": 0.3896,
+        "matched": "Hasan NASRALLAH",
+        "listed_dob": "1960-08-31",
+        "listed_countries": [
+          "LB"
+        ]
+      },
+      {
+        "wire": "WIRE-0164",
+        "group": "hard negative",
+        "name": "Hasan Nasrallah",
+        "dob": "1990-02-28",
+        "country": "AU",
+        "decision": "REVIEW",
+        "score": 0.39,
+        "matched": "Hasan NASRALLAH",
+        "listed_dob": "1960-08-31",
+        "listed_countries": [
+          "LB"
+        ]
+      },
+      {
+        "wire": "WIRE-0165",
+        "group": "hard negative",
+        "name": "Dmitry Medvedev",
+        "dob": "1995-06-30",
+        "country": "IL",
+        "decision": "BLOCK",
+        "score": 0.9646,
+        "matched": "Ilya Dmitrievich MEDVEDEV",
+        "listed_dob": "1995-08-03",
+        "listed_countries": [
+          "RU"
+        ]
+      },
+      {
+        "wire": "WIRE-0166",
+        "group": "hard negative",
+        "name": "Dmitri Medvedev",
+        "dob": "1991-01-15",
+        "country": "GB",
+        "decision": "REVIEW",
+        "score": 0.5193,
+        "matched": "Ilya Dmitrievich MEDVEDEV",
+        "listed_dob": "1995-08-03",
+        "listed_countries": [
+          "RU"
+        ]
+      },
+      {
+        "wire": "WIRE-0167",
+        "group": "hard negative",
+        "name": "Oleg Deripaska",
+        "dob": "1996-08-21",
+        "country": "US",
+        "decision": "REVIEW",
+        "score": 0.4397,
+        "matched": "Oleg Vladimirovich DERIPASKA",
+        "listed_dob": "1968-01-02",
+        "listed_countries": [
+          "RU",
+          "GB",
+          "CY"
+        ]
+      },
+      {
+        "wire": "WIRE-0168",
+        "group": "hard negative",
+        "name": "Rami Makhlouf",
+        "dob": "1995-03-09",
+        "country": "FR",
+        "decision": "REVIEW",
+        "score": 0.39,
+        "matched": "Rami MAKHLOUF",
+        "listed_dob": "1969-07-10",
+        "listed_countries": [
+          "SY"
+        ]
+      },
+      {
+        "wire": "WIRE-0169",
+        "group": "hard negative",
+        "name": "Bashar Al-Assad",
+        "dob": "1993-10-27",
+        "country": "SE",
+        "decision": "REVIEW",
+        "score": 0.5199,
+        "matched": "Bashir Mohamed MAHMOUD",
+        "listed_dob": null,
+        "listed_countries": [
+          "SO"
+        ]
+      },
+      {
+        "wire": "WIRE-0170",
+        "group": "hard negative",
+        "name": "Aleksandr Lukashenko",
+        "dob": "1994-07-14",
+        "country": "LT",
+        "decision": "REVIEW",
+        "score": 0.4452,
+        "matched": "Dmitry Aleksandrovich LUKASHENKO",
+        "listed_dob": "1980-03-23",
+        "listed_countries": [
+          "BY"
+        ]
+      },
+      {
+        "wire": "WIRE-0171",
+        "group": "hard negative",
+        "name": "Yevgeny Prigozhin",
+        "dob": "1996-11-02",
+        "country": "EE",
+        "decision": "REVIEW",
+        "score": 0.4657,
+        "matched": "Evgeny PRIGOZHIN",
+        "listed_dob": "1961-06-01",
+        "listed_countries": [
+          "RU"
+        ]
+      },
+      {
+        "wire": "WIRE-0172",
+        "group": "hard negative",
+        "name": "Ramzan Kadyrov",
+        "dob": "1998-05-19",
+        "country": "KZ",
+        "decision": "BLOCK",
+        "score": 0.7742,
+        "matched": "Ayshat Ramzanovna KADYROVA",
+        "listed_dob": "1998-12-31",
+        "listed_countries": [
+          "RU"
+        ]
+      },
+      {
+        "wire": "WIRE-0173",
+        "group": "hard negative",
+        "name": "Qasim Suleimani",
+        "dob": "1992-09-01",
+        "country": "TR",
+        "decision": "REVIEW",
+        "score": 0.4207,
+        "matched": "Murtadi QASIMI",
+        "listed_dob": "1991-04-10",
+        "listed_countries": [
+          "IR"
+        ]
+      },
+      {
+        "wire": "WIRE-0174",
+        "group": "hard negative",
+        "name": "Mohammed Ibrahim",
+        "dob": "1985-04-10",
+        "country": "IN",
+        "decision": "REVIEW",
+        "score": 0.5415,
+        "matched": "Muhammed Ibrahim ISA",
+        "listed_dob": "1989-01-01",
+        "listed_countries": [
+          "AE",
+          "NG"
+        ]
+      },
+      {
+        "wire": "WIRE-0175",
+        "group": "hard negative",
+        "name": "Ahmed Abdullah",
+        "dob": "1987-12-05",
+        "country": "MY",
+        "decision": "BLOCK",
+        "score": 0.8686,
+        "matched": "Abdulla Issam Ahmad AL-JEBOURI",
+        "listed_dob": "1988-10-03",
+        "listed_countries": [
+          "TR",
+          "IQ"
+        ]
+      },
+      {
+        "wire": "WIRE-0179",
+        "group": "hard negative",
+        "name": "Mohammed Ibrahim Al-Masri",
+        "dob": "1995-08-12",
+        "country": "JO",
+        "decision": "REVIEW",
+        "score": 0.4449,
+        "matched": "Mohammed AL-MASRI",
+        "listed_dob": "1963",
+        "listed_countries": [
+          "PS"
+        ]
+      },
+      {
+        "wire": "WIRE-0180",
+        "group": "hard negative",
+        "name": "Mohammed Ibrahim Al-Masri",
+        "dob": "1988-03-29",
+        "country": "AE",
+        "decision": "REVIEW",
+        "score": 0.4946,
+        "matched": "Milad MANSURI",
+        "listed_dob": "1989-09-11",
+        "listed_countries": [
+          "IR"
+        ]
+      },
+      {
+        "wire": "WIRE-0181",
+        "group": "hard negative",
+        "name": "Muhammad Ibrahim Al-Masri",
+        "dob": "1992-10-04",
+        "country": "KW",
+        "decision": "REVIEW",
+        "score": 0.4309,
+        "matched": "Mohammed AL-MASRI",
+        "listed_dob": "1963",
+        "listed_countries": [
+          "PS"
+        ]
+      },
+      {
+        "wire": "WIRE-0182",
+        "group": "hard negative",
+        "name": "Ahmed Abdullah Al-Baghdadi",
+        "dob": "1996-01-17",
+        "country": "OM",
+        "decision": "REVIEW",
+        "score": 0.405,
+        "matched": "Hassan AL-BAGHDADI",
+        "listed_dob": "1961-10-05",
+        "listed_countries": [
+          "LB"
+        ]
+      },
+      {
+        "wire": "WIRE-0183",
+        "group": "hard negative",
+        "name": "Ahmed Abdullah Al-Baghdadi",
+        "dob": "1993-07-22",
+        "country": "BH",
+        "decision": "REVIEW",
+        "score": 0.405,
+        "matched": "Hassan AL-BAGHDADI",
+        "listed_dob": "1961-10-05",
+        "listed_countries": [
+          "LB"
+        ]
+      },
+      {
+        "wire": "WIRE-0184",
+        "group": "hard negative",
+        "name": "Sergei Lavrov",
+        "dob": "1992-05-14",
+        "country": "DE",
+        "decision": "REVIEW",
+        "score": 0.4693,
+        "matched": "Sergey LAVROV",
+        "listed_dob": "1950-03-21",
+        "listed_countries": [
+          "RU"
+        ]
+      },
+      {
+        "wire": "WIRE-0185",
+        "group": "hard negative",
+        "name": "Sergey Lavrov",
+        "dob": "1989-11-08",
+        "country": "US",
+        "decision": "REVIEW",
+        "score": 0.47,
+        "matched": "Sergey LAVROV",
+        "listed_dob": "1950-03-21",
+        "listed_countries": [
+          "RU"
+        ]
+      },
+      {
+        "wire": "WIRE-0186",
+        "group": "hard negative",
+        "name": "Viktor But",
+        "dob": "1997-04-03",
+        "country": "PL",
+        "decision": "REVIEW",
+        "score": 0.5662,
+        "matched": "Viktor Anatolijevitch BOUT",
+        "listed_dob": "1967-01-13",
+        "listed_countries": []
+      },
+      {
+        "wire": "WIRE-0187",
+        "group": "hard negative",
+        "name": "Victor Bout",
+        "dob": "1993-09-19",
+        "country": "FR",
+        "decision": "REVIEW",
+        "score": 0.568,
+        "matched": "Viktor Anatolijevitch BOUT",
+        "listed_dob": "1967-01-13",
+        "listed_countries": []
+      },
+      {
+        "wire": "WIRE-0188",
+        "group": "hard negative",
+        "name": "Hassan Nasrallah",
+        "dob": "1994-12-11",
+        "country": "CA",
+        "decision": "REVIEW",
+        "score": 0.3896,
+        "matched": "Hasan NASRALLAH",
+        "listed_dob": "1960-08-31",
+        "listed_countries": [
+          "LB"
+        ]
+      },
+      {
+        "wire": "WIRE-0189",
+        "group": "hard negative",
+        "name": "Hasan Nasrallah",
+        "dob": "1990-02-28",
+        "country": "AU",
+        "decision": "REVIEW",
+        "score": 0.39,
+        "matched": "Hasan NASRALLAH",
+        "listed_dob": "1960-08-31",
+        "listed_countries": [
+          "LB"
+        ]
+      },
+      {
+        "wire": "WIRE-0190",
+        "group": "hard negative",
+        "name": "Dmitry Medvedev",
+        "dob": "1995-06-30",
+        "country": "IL",
+        "decision": "BLOCK",
+        "score": 0.9646,
+        "matched": "Ilya Dmitrievich MEDVEDEV",
+        "listed_dob": "1995-08-03",
+        "listed_countries": [
+          "RU"
+        ]
+      },
+      {
+        "wire": "WIRE-0191",
+        "group": "hard negative",
+        "name": "Dmitri Medvedev",
+        "dob": "1991-01-15",
+        "country": "GB",
+        "decision": "REVIEW",
+        "score": 0.5193,
+        "matched": "Ilya Dmitrievich MEDVEDEV",
+        "listed_dob": "1995-08-03",
+        "listed_countries": [
+          "RU"
+        ]
+      },
+      {
+        "wire": "WIRE-0192",
+        "group": "hard negative",
+        "name": "Oleg Deripaska",
+        "dob": "1996-08-21",
+        "country": "US",
+        "decision": "REVIEW",
+        "score": 0.4397,
+        "matched": "Oleg Vladimirovich DERIPASKA",
+        "listed_dob": "1968-01-02",
+        "listed_countries": [
+          "RU",
+          "GB",
+          "CY"
+        ]
+      },
+      {
+        "wire": "WIRE-0193",
+        "group": "hard negative",
+        "name": "Rami Makhlouf",
+        "dob": "1995-03-09",
+        "country": "FR",
+        "decision": "REVIEW",
+        "score": 0.39,
+        "matched": "Rami MAKHLOUF",
+        "listed_dob": "1969-07-10",
+        "listed_countries": [
+          "SY"
+        ]
+      },
+      {
+        "wire": "WIRE-0194",
+        "group": "hard negative",
+        "name": "Bashar Al-Assad",
+        "dob": "1993-10-27",
+        "country": "SE",
+        "decision": "REVIEW",
+        "score": 0.5199,
+        "matched": "Bashir Mohamed MAHMOUD",
+        "listed_dob": null,
+        "listed_countries": [
+          "SO"
+        ]
+      },
+      {
+        "wire": "WIRE-0195",
+        "group": "hard negative",
+        "name": "Aleksandr Lukashenko",
+        "dob": "1994-07-14",
+        "country": "LT",
+        "decision": "REVIEW",
+        "score": 0.4452,
+        "matched": "Dmitry Aleksandrovich LUKASHENKO",
+        "listed_dob": "1980-03-23",
+        "listed_countries": [
+          "BY"
+        ]
+      },
+      {
+        "wire": "WIRE-0196",
+        "group": "hard negative",
+        "name": "Yevgeny Prigozhin",
+        "dob": "1996-11-02",
+        "country": "EE",
+        "decision": "REVIEW",
+        "score": 0.4657,
+        "matched": "Evgeny PRIGOZHIN",
+        "listed_dob": "1961-06-01",
+        "listed_countries": [
+          "RU"
+        ]
+      },
+      {
+        "wire": "WIRE-0197",
+        "group": "hard negative",
+        "name": "Ramzan Kadyrov",
+        "dob": "1998-05-19",
+        "country": "KZ",
+        "decision": "BLOCK",
+        "score": 0.7742,
+        "matched": "Ayshat Ramzanovna KADYROVA",
+        "listed_dob": "1998-12-31",
+        "listed_countries": [
+          "RU"
+        ]
+      },
+      {
+        "wire": "WIRE-0198",
+        "group": "hard negative",
+        "name": "Qasim Suleimani",
+        "dob": "1992-09-01",
+        "country": "TR",
+        "decision": "REVIEW",
+        "score": 0.4207,
+        "matched": "Murtadi QASIMI",
+        "listed_dob": "1991-04-10",
+        "listed_countries": [
+          "IR"
+        ]
+      },
+      {
+        "wire": "WIRE-0199",
+        "group": "hard negative",
+        "name": "Mohammed Ibrahim",
+        "dob": "1985-04-10",
+        "country": "IN",
+        "decision": "REVIEW",
+        "score": 0.5415,
+        "matched": "Muhammed Ibrahim ISA",
+        "listed_dob": "1989-01-01",
+        "listed_countries": [
+          "AE",
+          "NG"
+        ]
+      },
+      {
+        "wire": "WIRE-0200",
+        "group": "hard negative",
+        "name": "Ahmed Abdullah",
+        "dob": "1987-12-05",
+        "country": "MY",
+        "decision": "BLOCK",
+        "score": 0.8686,
+        "matched": "Abdulla Issam Ahmad AL-JEBOURI",
+        "listed_dob": "1988-10-03",
+        "listed_countries": [
+          "TR",
+          "IQ"
+        ]
+      },
+      {
+        "wire": "WIRE-0201",
+        "group": "hard negative",
+        "name": "Rostov Oil Company OJSC",
+        "dob": null,
+        "country": "RU",
+        "decision": "REVIEW",
+        "score": 0.6357,
+        "matched": "ROSTVERTOL PAO",
+        "listed_dob": null,
+        "listed_countries": [
+          "RU"
+        ]
+      },
+      {
+        "wire": "WIRE-0202",
+        "group": "hard negative",
+        "name": "Rossiya Oil Company OJSC",
+        "dob": null,
+        "country": "RU",
+        "decision": "BLOCK",
+        "score": 1.0,
+        "matched": "BANK ROSSIYA",
+        "listed_dob": null,
+        "listed_countries": [
+          "RU"
+        ]
+      },
+      {
+        "wire": "WIRE-0205",
+        "group": "hard negative",
+        "name": "Maharaja Air General Aviation Co",
+        "dob": null,
+        "country": "IN",
+        "decision": "REVIEW",
+        "score": 0.6339,
+        "matched": "A & M MAHAR COMPANY LIMITED",
+        "listed_dob": null,
+        "listed_countries": [
+          "MM"
+        ]
+      },
+      {
+        "wire": "WIRE-0207",
+        "group": "hard negative",
+        "name": "Mahogany Air General Aviation Co",
+        "dob": null,
+        "country": "SG",
+        "decision": "REVIEW",
+        "score": 0.7089,
+        "matched": "MAHAN AIR",
+        "listed_dob": null,
+        "listed_countries": [
+          "IR"
+        ]
+      },
+      {
+        "wire": "WIRE-0208",
+        "group": "hard negative",
+        "name": "Maharani Air General Aviation Co",
+        "dob": null,
+        "country": "IN",
+        "decision": "BLOCK",
+        "score": 0.956,
+        "matched": "GLOBAL MAHARANI",
+        "listed_dob": null,
+        "listed_countries": []
+      },
+      {
+        "wire": "WIRE-0209",
+        "group": "hard negative",
+        "name": "Al-Manar Global Trading LLC",
+        "dob": null,
+        "country": "AE",
+        "decision": "BLOCK",
+        "score": 0.9666,
+        "matched": "MANAURE",
+        "listed_dob": null,
+        "listed_countries": []
+      },
+      {
+        "wire": "WIRE-0211",
+        "group": "hard negative",
+        "name": "Al-Nيل Global Trading LLC",
+        "dob": null,
+        "country": "EG",
+        "decision": "BLOCK",
+        "score": 0.9663,
+        "matched": "NILE",
+        "listed_dob": null,
+        "listed_countries": []
+      },
+      {
+        "wire": "WIRE-0212",
+        "group": "hard negative",
+        "name": "Al-Nasr Global Trading LLC",
+        "dob": null,
+        "country": "QA",
+        "decision": "BLOCK",
+        "score": 0.9397,
+        "matched": "NASR INDUSTRIES GROUP",
+        "listed_dob": null,
+        "listed_countries": [
+          "IR"
+        ]
+      },
+      {
+        "wire": "WIRE-0214",
+        "group": "hard negative",
+        "name": "Korea Daesong General Corporation",
+        "dob": null,
+        "country": "KR",
+        "decision": "BLOCK",
+        "score": 0.9982,
+        "matched": "KOREA DAESONG GENERAL TRADING CORPORATION",
+        "listed_dob": null,
+        "listed_countries": [
+          "KP"
+        ]
+      },
+      {
+        "wire": "WIRE-0216",
+        "group": "hard negative",
+        "name": "Korea Kumgang General Corporation",
+        "dob": null,
+        "country": "KR",
+        "decision": "BLOCK",
+        "score": 0.7692,
+        "matched": "KUMGANG BANK",
+        "listed_dob": null,
+        "listed_countries": [
+          "KP"
+        ]
+      },
+      {
+        "wire": "WIRE-0217",
+        "group": "hard negative",
+        "name": "Korea Taedong General Corporation",
+        "dob": null,
+        "country": "KR",
+        "decision": "BLOCK",
+        "score": 0.8349,
+        "matched": "KOREA TAESONG TRADING COMPANY",
+        "listed_dob": null,
+        "listed_countries": [
+          "KP"
+        ]
+      },
+      {
+        "wire": "WIRE-0218",
+        "group": "hard negative",
+        "name": "Gazstroibank JSC",
+        "dob": null,
+        "country": "KZ",
+        "decision": "REVIEW",
+        "score": 0.7265,
+        "matched": "GAZTRON CORP",
+        "listed_dob": null,
+        "listed_countries": [
+          "RU"
+        ]
+      },
+      {
+        "wire": "WIRE-0221",
+        "group": "hard negative",
+        "name": "Rostov Oil Company OJSC",
+        "dob": null,
+        "country": "RU",
+        "decision": "REVIEW",
+        "score": 0.6357,
+        "matched": "ROSTVERTOL PAO",
+        "listed_dob": null,
+        "listed_countries": [
+          "RU"
+        ]
+      },
+      {
+        "wire": "WIRE-0222",
+        "group": "hard negative",
+        "name": "Rossiya Oil Company OJSC",
+        "dob": null,
+        "country": "RU",
+        "decision": "BLOCK",
+        "score": 1.0,
+        "matched": "BANK ROSSIYA",
+        "listed_dob": null,
+        "listed_countries": [
+          "RU"
+        ]
+      },
+      {
+        "wire": "WIRE-0225",
+        "group": "hard negative",
+        "name": "Maharaja Air General Aviation Co",
+        "dob": null,
+        "country": "IN",
+        "decision": "REVIEW",
+        "score": 0.6339,
+        "matched": "A & M MAHAR COMPANY LIMITED",
+        "listed_dob": null,
+        "listed_countries": [
+          "MM"
+        ]
+      },
+      {
+        "wire": "WIRE-0227",
+        "group": "hard negative",
+        "name": "Mahogany Air General Aviation Co",
+        "dob": null,
+        "country": "SG",
+        "decision": "REVIEW",
+        "score": 0.7089,
+        "matched": "MAHAN AIR",
+        "listed_dob": null,
+        "listed_countries": [
+          "IR"
+        ]
+      },
+      {
+        "wire": "WIRE-0228",
+        "group": "hard negative",
+        "name": "Maharani Air General Aviation Co",
+        "dob": null,
+        "country": "IN",
+        "decision": "BLOCK",
+        "score": 0.956,
+        "matched": "GLOBAL MAHARANI",
+        "listed_dob": null,
+        "listed_countries": []
+      },
+      {
+        "wire": "WIRE-0229",
+        "group": "hard negative",
+        "name": "Al-Manar Global Trading LLC",
+        "dob": null,
+        "country": "AE",
+        "decision": "BLOCK",
+        "score": 0.9666,
+        "matched": "MANAURE",
+        "listed_dob": null,
+        "listed_countries": []
+      },
+      {
+        "wire": "WIRE-0231",
+        "group": "hard negative",
+        "name": "Al-Nيل Global Trading LLC",
+        "dob": null,
+        "country": "EG",
+        "decision": "BLOCK",
+        "score": 0.9663,
+        "matched": "NILE",
+        "listed_dob": null,
+        "listed_countries": []
+      },
+      {
+        "wire": "WIRE-0232",
+        "group": "hard negative",
+        "name": "Al-Nasr Global Trading LLC",
+        "dob": null,
+        "country": "QA",
+        "decision": "BLOCK",
+        "score": 0.9397,
+        "matched": "NASR INDUSTRIES GROUP",
+        "listed_dob": null,
+        "listed_countries": [
+          "IR"
+        ]
+      },
+      {
+        "wire": "WIRE-0234",
+        "group": "hard negative",
+        "name": "Korea Daesong General Corporation",
+        "dob": null,
+        "country": "KR",
+        "decision": "BLOCK",
+        "score": 0.9982,
+        "matched": "KOREA DAESONG GENERAL TRADING CORPORATION",
+        "listed_dob": null,
+        "listed_countries": [
+          "KP"
+        ]
+      },
+      {
+        "wire": "WIRE-0236",
+        "group": "hard negative",
+        "name": "Korea Kumgang General Corporation",
+        "dob": null,
+        "country": "KR",
+        "decision": "BLOCK",
+        "score": 0.7692,
+        "matched": "KUMGANG BANK",
+        "listed_dob": null,
+        "listed_countries": [
+          "KP"
+        ]
+      },
+      {
+        "wire": "WIRE-0237",
+        "group": "hard negative",
+        "name": "Korea Taedong General Corporation",
+        "dob": null,
+        "country": "KR",
+        "decision": "BLOCK",
+        "score": 0.8349,
+        "matched": "KOREA TAESONG TRADING COMPANY",
+        "listed_dob": null,
+        "listed_countries": [
+          "KP"
+        ]
+      },
+      {
+        "wire": "WIRE-0238",
+        "group": "hard negative",
+        "name": "Gazstroibank JSC",
+        "dob": null,
+        "country": "KZ",
+        "decision": "REVIEW",
+        "score": 0.7265,
+        "matched": "GAZTRON CORP",
+        "listed_dob": null,
+        "listed_countries": [
+          "RU"
+        ]
+      },
+      {
+        "wire": "WIRE-0241",
+        "group": "hard negative",
+        "name": "Emerald Bosporus Shipping Co",
+        "dob": null,
+        "country": "TR",
+        "decision": "REVIEW",
+        "score": 0.6568,
+        "matched": "EMERALD FZE",
+        "listed_dob": null,
+        "listed_countries": [
+          "AE"
+        ]
+      },
+      {
+        "wire": "WIRE-0242",
+        "group": "hard negative",
+        "name": "Emerald Bosporus Shipping Ltd",
+        "dob": null,
+        "country": "TR",
+        "decision": "REVIEW",
+        "score": 0.6568,
+        "matched": "EMERALD FZE",
+        "listed_dob": null,
+        "listed_countries": [
+          "AE"
+        ]
+      },
+      {
+        "wire": "WIRE-0243",
+        "group": "hard negative",
+        "name": "Emerald Bosporus Shipping Company",
+        "dob": null,
+        "country": "TR",
+        "decision": "REVIEW",
+        "score": 0.6568,
+        "matched": "EMERALD FZE",
+        "listed_dob": null,
+        "listed_countries": [
+          "AE"
+        ]
+      },
+      {
+        "wire": "WIRE-0246",
+        "group": "hard negative",
+        "name": "Emerald Bosporus Shipping Co",
+        "dob": null,
+        "country": "TR",
+        "decision": "REVIEW",
+        "score": 0.6568,
+        "matched": "EMERALD FZE",
+        "listed_dob": null,
+        "listed_countries": [
+          "AE"
+        ]
+      },
+      {
+        "wire": "WIRE-0247",
+        "group": "hard negative",
+        "name": "Emerald Bosporus Shipping Ltd",
+        "dob": null,
+        "country": "TR",
+        "decision": "REVIEW",
+        "score": 0.6568,
+        "matched": "EMERALD FZE",
+        "listed_dob": null,
+        "listed_countries": [
+          "AE"
+        ]
+      },
+      {
+        "wire": "WIRE-0248",
+        "group": "hard negative",
+        "name": "Emerald Bosporus Shipping Company",
+        "dob": null,
+        "country": "TR",
+        "decision": "REVIEW",
+        "score": 0.6568,
+        "matched": "EMERALD FZE",
+        "listed_dob": null,
+        "listed_countries": [
+          "AE"
+        ]
+      },
+      {
+        "wire": "WIRE-0251",
+        "group": "hard negative",
+        "name": "Emerald Bosporus Shipping Co",
+        "dob": null,
+        "country": "TR",
+        "decision": "REVIEW",
+        "score": 0.6568,
+        "matched": "EMERALD FZE",
+        "listed_dob": null,
+        "listed_countries": [
+          "AE"
+        ]
+      },
+      {
+        "wire": "WIRE-0252",
+        "group": "hard negative",
+        "name": "Emerald Bosporus Shipping Ltd",
+        "dob": null,
+        "country": "TR",
+        "decision": "REVIEW",
+        "score": 0.6568,
+        "matched": "EMERALD FZE",
+        "listed_dob": null,
+        "listed_countries": [
+          "AE"
+        ]
+      },
+      {
+        "wire": "WIRE-0253",
+        "group": "hard negative",
+        "name": "Emerald Bosporus Shipping Company",
+        "dob": null,
+        "country": "TR",
+        "decision": "REVIEW",
+        "score": 0.6568,
+        "matched": "EMERALD FZE",
+        "listed_dob": null,
+        "listed_countries": [
+          "AE"
+        ]
+      },
+      {
+        "wire": "WIRE-0256",
+        "group": "hard negative",
+        "name": "Emerald Bosporus Shipping Co",
+        "dob": null,
+        "country": "TR",
+        "decision": "REVIEW",
+        "score": 0.6568,
+        "matched": "EMERALD FZE",
+        "listed_dob": null,
+        "listed_countries": [
+          "AE"
+        ]
+      },
+      {
+        "wire": "WIRE-0257",
+        "group": "hard negative",
+        "name": "Emerald Bosporus Shipping Ltd",
+        "dob": null,
+        "country": "TR",
+        "decision": "REVIEW",
+        "score": 0.6568,
+        "matched": "EMERALD FZE",
+        "listed_dob": null,
+        "listed_countries": [
+          "AE"
+        ]
+      },
+      {
+        "wire": "WIRE-0258",
+        "group": "hard negative",
+        "name": "Emerald Bosporus Shipping Company",
+        "dob": null,
+        "country": "TR",
+        "decision": "REVIEW",
+        "score": 0.6568,
+        "matched": "EMERALD FZE",
+        "listed_dob": null,
+        "listed_countries": [
+          "AE"
+        ]
+      },
+      {
+        "wire": "WIRE-0261",
+        "group": "hard negative",
+        "name": "Emerald Bosporus Shipping Co",
+        "dob": null,
+        "country": "TR",
+        "decision": "REVIEW",
+        "score": 0.6568,
+        "matched": "EMERALD FZE",
+        "listed_dob": null,
+        "listed_countries": [
+          "AE"
+        ]
+      },
+      {
+        "wire": "WIRE-0262",
+        "group": "hard negative",
+        "name": "Emerald Bosporus Shipping Ltd",
+        "dob": null,
+        "country": "TR",
+        "decision": "REVIEW",
+        "score": 0.6568,
+        "matched": "EMERALD FZE",
+        "listed_dob": null,
+        "listed_countries": [
+          "AE"
+        ]
+      },
+      {
+        "wire": "WIRE-0263",
+        "group": "hard negative",
+        "name": "Emerald Bosporus Shipping Company",
+        "dob": null,
+        "country": "TR",
+        "decision": "REVIEW",
+        "score": 0.6568,
+        "matched": "EMERALD FZE",
+        "listed_dob": null,
+        "listed_countries": [
+          "AE"
+        ]
+      },
+      {
+        "wire": "WIRE-0270",
+        "group": "hard negative",
+        "name": "Tata Consultancy Services Ltd",
+        "dob": null,
+        "country": "IN",
+        "decision": "REVIEW",
+        "score": 0.7083,
+        "matched": "TAT BANK",
+        "listed_dob": null,
+        "listed_countries": [
+          "IR"
+        ]
+      },
+      {
+        "wire": "WIRE-0275",
+        "group": "hard negative",
+        "name": "Emirates SkyCargo Logistics FZE",
+        "dob": null,
+        "country": "AE",
+        "decision": "REVIEW",
+        "score": 0.6006,
+        "matched": "LIMITED LIABILITY COMPANY EMIRATES BLUE SKY",
+        "listed_dob": null,
+        "listed_countries": [
+          "BY"
+        ]
+      },
+      {
+        "wire": "WIRE-0287",
+        "group": "hard negative",
+        "name": "Chen Wei Ming",
+        "dob": "1980-12-25",
+        "country": "TW",
+        "decision": "BLOCK",
+        "score": 0.7599,
+        "matched": "Mingfu CHEN",
+        "listed_dob": "1980-04-30",
+        "listed_countries": [
+          "CN"
+        ]
+      }
+    ]
+  },
+  "with_weak_akas": {
+    "entries": 19471,
+    "aliases": 24613,
+    "latency_ms_indexed": {
+      "median": 55.77,
+      "p95": 172.31,
+      "max": 342.03
+    },
+    "candidates_per_wire": {
+      "median": 324.0,
+      "max": 899
+    },
+    "synthetic_entries_on_real_list": {
+      "SDN-001": [
+        "OFAC-8279"
+      ],
+      "SDN-003": [
+        "OFAC-12606"
+      ],
+      "SDN-004": [
+        "OFAC-10481"
+      ],
+      "SDN-005": [
+        "OFAC-35233"
+      ],
+      "SDN-006": [
+        "OFAC-21171"
+      ],
+      "SDN-007": [
+        "OFAC-24283"
+      ],
+      "SDN-008": [
+        "OFAC-9760"
+      ],
+      "SDN-009": [
+        "OFAC-2686"
+      ],
+      "SDN-010": [
+        "OFAC-12735"
+      ],
+      "SDN-011": [
+        "OFAC-6915"
+      ],
+      "SDN-013": [
+        "OFAC-36407"
+      ],
+      "SDN-014": [
+        "OFAC-10725"
+      ],
+      "SDN-015": [
+        "OFAC-23343"
+      ],
+      "SDN-017": [
+        "OFAC-17022"
+      ],
+      "SDN-018": [
+        "OFAC-12927"
+      ],
+      "SDN-019": [
+        "OFAC-9347"
+      ],
+      "SDN-020": [
+        "OFAC-17016"
+      ]
+    },
+    "synthetic_entries_not_on_real_list": [
+      "SDN-002",
+      "SDN-012",
+      "SDN-016"
+    ],
+    "wires": {
+      "names a listed person or company": {
+        "wires": 99,
+        "BLOCK": 99,
+        "REVIEW": 0,
+        "CLEAR": 0,
+        "blocked_on_a_one_word_name": 5,
+        "blocked_on_the_right_entry": 98
+      },
+      "names a synthetic entry not on the real list": {
+        "wires": 21,
+        "BLOCK": 6,
+        "REVIEW": 5,
+        "CLEAR": 10,
+        "blocked_on_a_one_word_name": 4
+      },
+      "shell company (synthetic ownership graph)": {
+        "wires": 30,
+        "BLOCK": 0,
+        "REVIEW": 23,
+        "CLEAR": 7,
+        "blocked_on_a_one_word_name": 0
+      },
+      "hard negative": {
+        "wires": 150,
+        "BLOCK": 25,
+        "REVIEW": 63,
+        "CLEAR": 62,
+        "blocked_on_a_one_word_name": 6
+      }
+    },
+    "listed_wires_not_blocked_on_their_entry": [
+      {
+        "wire": "WIRE-0105",
+        "name": "Muhammed I. Al-Masri",
+        "dob": "1963-07-19",
+        "country": "PS",
+        "decision": "BLOCK",
+        "score": 1.0,
         "top_match": "Mohammed AL-MASRI",
         "listed_as": "Abdullah Ahmed ABDULLAH",
         "listed_dob": "1963"
