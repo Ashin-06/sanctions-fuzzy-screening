@@ -105,25 +105,49 @@ The one real-name wire still off its entry is "Muhammed I. Al-Masri", blocked on
 ## Run it
 
 ```bash
-pip install -r requirements.txt
-python -m pytest -q                                      # 15 tests
+pip install -r requirements.txt                          # or: pip install -r requirements-dev.lock && pip install -e .
+python -m pytest -q                                      # 30 tests
 python -m sancscreen bench
 python -m sancscreen screen --name "Виктор Бут" --dob 1967-01-13
-python -m sancscreen serve --port 8016                   # API only, no browser console
+python -m sancscreen serve                               # API on :8016 with the demo list (open, loopback only)
+SANCSCREEN_SDN_XML=SDN.XML python -m sancscreen serve    # the same against the real OFAC list
+docker build -t sanctions-fuzzy-screening .              # production image; see docs/runbook.md
 python -m sancscreen realdata --sdn SDN.XML              # screen against the real OFAC list
 python -m sancscreen realdata --sdn SDN.XML --wikidata wikidata/   # plus the held-out set
 ```
 
 `--wikidata` expects the `people_*.csv` and `firms_*.csv` query results described in `realdata.py`. Wikidata changes over time, so a fresh download gives a slightly different set.
 
-Endpoints: `POST /screen`, `POST /ubo/check`, `GET /watchlist`, `GET /bench`, `GET /health`. Set `SANCSCREEN_API_KEY` to require it in the `X-API-Key` header. Without the key the server runs open, and `serve` refuses to bind a non-loopback address.
+Endpoints:
+- `POST /screen`, `POST /ubo/check`: screen a party. Every result is logged with the caller and the list version, and comes back with a `screening_id`.
+- `GET /screenings`, `GET /screenings/{id}`, `POST /screenings/{id}/review`: the screening log. Analysts mark hits `cleared` (false positive) or `confirmed`, with a note.
+- `GET /watchlist` (a page at a time), `GET /bench`.
+- `GET /healthz`, `GET /readyz`, `GET /metrics`: liveness, readiness and Prometheus metrics.
+
+Each caller gets an API key with a role: `screener` for payment systems, `viewer`, `analyst` (screens, reads and reviews), `monitor` for metrics. Make one with `python -m sancscreen.ops keygen` and list its hash in `SANCSCREEN_API_KEYS` or `SANCSCREEN_KEYS_FILE`. Without keys the server runs open and refuses to bind a non-loopback address. With `SANCSCREEN_ENV=production` it refuses to start without hashed keys, a database and `SANCSCREEN_SDN_XML`; the bundled list and ownership graph are never used in production. Settings, daily list updates and backups are in [docs/runbook.md](docs/runbook.md); what the matcher gets right and wrong is in [docs/model-card.md](docs/model-card.md).
 
 ## Limits
 
-- **Not ready for a real list.** On the held-out test against the full OFAC list, the scorer still blocks 5.6% of real unlisted people and 7.5% of companies, and sends another 17% and 23% to REVIEW (see Real data). The UN, EU and UK lists have no loader, and nothing keeps any list updated.
+- **Not ready for a real list.** On the held-out test against the full OFAC list, the scorer still blocks 5.6% of real unlisted people and 7.5% of companies, and sends another 17% and 23% to REVIEW (see Real data). The UN, EU and UK lists have no loader, and nothing fetches list updates: an operator replaces the file and restarts (see the runbook).
 - **The held-out set is synthetic on the positive side.** Listed names were changed by rules (one typo, one spelling swap, …), not taken from real payment traffic, and there are no cross-script positives in it. Its negatives may still include a few listed people or companies under other spellings.
 - **The candidate index can miss** a listed name whose distinctive token is more than one letter away in phonetic code and doesn't share its first three letters, and a REVIEW reached by a strong partial name plus a matching DOB and country.
 - **Transliteration is rule-based and partial.** There's no Persian, Urdu, Chinese, Korean or Hebrew, no full Arabic vowel recovery, and the lexicons are tiny.
 - **Thresholds and weights.** The six scorer constants in `matcher.py` were tuned on the tune half of the held-out set. The BLOCK/REVIEW thresholds, the IDF priors and the DOB/country adjustments are still hand-set.
 - **The ownership graph is a hand-made toy.** Real use needs registry data (ownership chains, nominee and trust structures), and lookup is by exact normalised name.
-- **No case management, audit log or list versioning**, and no deployment story (TLS, rate limiting).
+- **Thin case management.** Every screening and review is logged with the list version, but there is no assignment, four-eyes approval or tamper-evident history. TLS is left to the ingress.
+
+## Production readiness
+
+**In place** (see [docs/runbook.md](docs/runbook.md), [docs/threat-model.md](docs/threat-model.md), [docs/model-card.md](docs/model-card.md)):
+- Pinned dependencies (`requirements.lock`), `pyproject.toml`, a container image that runs as a non-root user with a health check, and CI (ruff, bandit, pip-audit, tests with coverage).
+- Production mode that refuses to start without hashed per-client API keys, a database and the real OFAC list. No default secrets, no public listening without keys, and OFAC's XML parsed with `defusedxml`.
+- Roles on keys, per-client rate limits, a body cap, security headers, no CORS by default, and errors that don't echo names or IDs.
+- A screening log with the list version on every result and analyst reviews, in SQLite or Postgres with numbered migrations.
+- JSON logs with request IDs, `/healthz`, `/readyz`, and Prometheus metrics by decision.
+
+**Still needed before it screens real payments**, none of which code can supply:
+- An independent security review and penetration test.
+- Validation on the bank's own payment traffic, run in parallel with its current screening. The held-out positives are synthetic changes of listed names, and 5.6–7.5% of real unlisted names are still blocked.
+- Sign-off from compliance and the regulators: RBI's KYC and sanctions-screening directions, FEMA for cross-border wires, PMLA record-keeping, and the DPDP Act 2023 for the stored customer names.
+- Real integrations: the payment hub and SWIFT gateway, automated daily list updates (OFAC plus the UN, EU, UK and MHA lists, which have no loader yet), a real ownership data source, and the bank's case management system.
+- Managed infrastructure (a KMS or HSM for key material, encrypted storage, retention rules), and an on-call team with SLOs: screening sits in the payment path.
