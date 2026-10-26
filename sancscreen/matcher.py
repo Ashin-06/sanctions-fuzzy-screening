@@ -3,7 +3,7 @@ Order-Invariant IDF-Weighted Bipartite Token Matcher & Secondary Identifier Reso
 
 Combines:
 1. Corpus + Prior Inverse Document Frequency (IDF) token weighting
-2. Jaro-Winkler character similarity + Consonant Phonetic Code similarity + Initial/Prefix alignment
+2. Jaro-Winkler character similarity + Consonant Phonetic Code similarity + Initial alignment
 3. Exact optimal maximum-weight bipartite token matching (order-invariant)
 4. Secondary identifier reconciliation (DOB exact/year match, Nationality/Country ISO, Passport/BIC/LEI)
 5. Naive Levenshtein baseline for benchmark comparison
@@ -14,6 +14,7 @@ from __future__ import annotations
 import math
 import re
 from dataclasses import dataclass, field
+from functools import lru_cache
 from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
 from sancscreen.phonetics import (
@@ -109,6 +110,12 @@ LOW_IDF_PRIORS: Dict[str, float] = {
     "dmitry": 0.55,
     "ivan": 0.50,
 }
+
+# Company forms are stripped before matching, but a misspelt one ("Liited", "Joint Stocck")
+# would otherwise count as a rare, distinctive word
+FORM_WORDS = ("company", "limited", "corporation", "incorporated", "joint", "stock", "liability",
+              "aktsionernoe", "obshchestvo", "ogranichennoi", "otvetstvennostyu")
+FORM_WORD_WEIGHT = 0.20
 
 
 @dataclass
@@ -278,6 +285,16 @@ def jaro_winkler(s1: str, s2: str, prefix_weight: float = 0.1) -> float:
     return min(1.0, j_sim + prefix_len * prefix_weight * (1.0 - j_sim))
 
 
+# Tuned on the "tune" half of the held-out set in realdata.py (README, "Real data")
+MIN_PAIR_SIMILARITY = 0.80  # weaker token pairs don't count as matched
+SIM_FLOOR = 0.75            # a matched pair counts (similarity - floor) / (1 - floor): 0.90 counts 0.6
+PHONETIC_MIN_CHAR = 0.90    # equal phonetic codes lift a pair to 0.95+ only from this spelling similarity
+QUERY_WEIGHT = 0.45         # weight of the wire's own name against the listed name in the score
+DISTINCTIVE_RATIO = 0.85    # listed tokens weighing this share of the rarest one's weight count as distinctive
+INITIAL_WEIGHT = 2.0        # a single letter says little about whose name it is
+
+
+@lru_cache(maxsize=500_000)  # pure; the same pairs recur across aliases and wires
 def token_pair_similarity(q_tok: str, s_tok: str, q_phon: str, s_phon: str) -> Tuple[float, float, float]:
     """
     Compute hybrid similarity between two normalized Latin tokens and their phonetic codes.
@@ -289,34 +306,23 @@ def token_pair_similarity(q_tok: str, s_tok: str, q_phon: str, s_phon: str) -> T
     char_sim = jaro_winkler(q_tok, s_tok)
     phon_sim = jaro_winkler(q_phon, s_phon) if (q_phon and s_phon) else 0.0
 
-    # Case 1: Exact phonetic code match
-    if q_phon and s_phon and q_phon == s_phon:
+    # A single letter only matches as an initial ("v" -> "viktor")
+    if min(len(q_tok), len(s_tok)) == 1:
+        return char_sim, phon_sim, 0.84 if q_tok[0] == s_tok[0] else 0.0
+
+    if q_phon and q_phon == s_phon:
         phon_sim = 1.0
-        if len(q_phon) >= 3 or char_sim >= 0.65:
-            combined = max(char_sim, 0.95 + 0.05 * char_sim)
-        else:
-            # Very short 1-2 char phonetic code with low char similarity
-            combined = 0.65 * phon_sim + 0.35 * char_sim
-        return char_sim, phon_sim, min(1.0, combined)
-
-    # Case 2: Initial or prefix abbreviation match (e.g. "v" -> "viktor", "alex" -> "aleksandr")
-    init_sim = 0.0
-    if len(q_tok) == 1 and len(s_tok) >= 2 and s_tok[0] == q_tok[0]:
-        init_sim = 0.84
-    elif len(s_tok) == 1 and len(q_tok) >= 2 and q_tok[0] == s_tok[0]:
-        init_sim = 0.84
-    elif min(len(q_tok), len(s_tok)) >= 3 and (s_tok.startswith(q_tok) or q_tok.startswith(s_tok)):
-        init_sim = 0.88
-
-    # Case 3: Hybrid blend of character Jaro-Winkler and phonetic Jaro-Winkler
+    # Hybrid blend of character Jaro-Winkler and phonetic Jaro-Winkler
     hybrid = 0.55 * char_sim + 0.45 * phon_sim
-    # If phonetic similarity is very strong (>= 0.88) and char similarity is moderate (>= 0.72),
-    # allow phonetic similarity to lead (captures cross-dialect transliterations)
-    if phon_sim >= 0.88 and char_sim >= 0.70:
-        hybrid = max(hybrid, 0.72 * phon_sim + 0.28 * char_sim)
+    # Phonetic similarity leads only if the spelling is close too: against a full list short consonant
+    # skeletons collide (Green / Guarino, Zaman / Osman)
+    if char_sim >= PHONETIC_MIN_CHAR:
+        if phon_sim == 1.0:  # same skeleton: Bout / But, Mohammed / Muhammad
+            return char_sim, phon_sim, max(char_sim, 0.95 + 0.05 * char_sim)
+        if phon_sim >= 0.88 and char_sim >= 0.70:  # cross-dialect transliterations
+            hybrid = max(hybrid, 0.72 * phon_sim + 0.28 * char_sim)
 
-    combined = max(char_sim, hybrid, init_sim)
-    return char_sim, phon_sim, min(1.0, combined)
+    return char_sim, phon_sim, min(1.0, max(char_sim, hybrid))
 
 
 def _solve_bipartite_assignment(sim_matrix: List[List[float]]) -> List[Tuple[int, int, float]]:
@@ -426,6 +432,22 @@ def _blocking_keys(token: str, query: bool = False) -> Set[str]:
     return keys
 
 
+def _join_split(tokens: List[str], other: List[str]) -> List[str]:
+    """Merge adjacent tokens that `other` writes as one word ("nasr allah" / "nasrallah")."""
+    out: List[str] = []
+    for t in tokens:
+        if out and out[-1] + t in other and out[-1] not in other:
+            out[-1] += t
+        else:
+            out.append(t)
+    return out
+
+
+@lru_cache(maxsize=100_000)
+def _looks_like_form_word(token: str) -> bool:
+    return any(jaro_winkler(token, f) >= 0.90 for f in FORM_WORDS)
+
+
 def types_compatible(query_type: Optional[str], entry_type: str) -> bool:
     """A person is only compared with listed persons, a company with listed entities/vessels."""
     if not query_type:
@@ -484,12 +506,13 @@ class SanctionsMatcher:
         """
         Blocking index so a query is scored against tens of entries, not the whole list.
 
-        A name reaches REVIEW or BLOCK only if the listed name's highest-IDF token is matched
-        (the distinctive-token cap in _score_token_sets holds it to 0.58 otherwise) or an ID
-        matches exactly. So each name is indexed under the blocking keys of that one token, and
-        each entry under its IDs. Names whose top token is generic (weight < 0.80, no cap) are
-        indexed under every token. A strong partial name plus an exact DOB and country can still
-        reach REVIEW without the distinctive token; the index misses those.
+        A name reaches REVIEW or BLOCK only if one of the listed name's distinctive tokens (IDF
+        within DISTINCTIVE_RATIO of its highest) is matched (the distinctive-token cap in
+        _score_token_sets holds it to 0.58 otherwise) or an ID matches exactly. So each name is
+        indexed under the blocking keys of those tokens, and each entry under its IDs. Names whose
+        top token is generic (weight < 0.80, no cap) are indexed under every token. A strong partial
+        name plus an exact DOB and country can still reach REVIEW without a distinctive token; the
+        index misses those.
         """
         for k, entry in enumerate(self.watchlist):
             for nm in [entry.name] + list(entry.aliases):
@@ -497,8 +520,8 @@ class SanctionsMatcher:
                 if not toks:
                     continue
                 weights = [self.get_token_weight(t) for t in toks]
-                top = max(range(len(toks)), key=lambda i: weights[i])
-                for t in (toks if weights[top] < 0.80 else [toks[top]]):
+                top = max(weights)
+                for t in (t for t, w in zip(toks, weights) if top < 0.80 or w >= DISTINCTIVE_RATIO * top):
                     for key in _blocking_keys(t):
                         self.candidate_index.setdefault(key, set()).add(k)
             for raw_id in entry.identifiers:
@@ -518,10 +541,14 @@ class SanctionsMatcher:
         """Return discriminative IDF weight for a normalized Latin token."""
         if not token:
             return 0.1
+        if len(token) == 1:
+            return INITIAL_WEIGHT
         if token in LOW_IDF_PRIORS:
             return LOW_IDF_PRIORS[token]
         if token in self.token_idf:
             return self.token_idf[token]
+        if _looks_like_form_word(token):
+            return FORM_WORD_WEIGHT
         # Unseen token: check if its phonetic code is a known low-IDF prior
         pc = phonetic_code(token)
         for prior_tok, prior_w in LOW_IDF_PRIORS.items():
@@ -542,6 +569,7 @@ class SanctionsMatcher:
         """
         if not q_tokens or not s_tokens:
             return 0.0, []
+        q_tokens, s_tokens = _join_split(q_tokens, s_tokens), _join_split(s_tokens, q_tokens)
 
         q_phons = [phonetic_code(t) for t in q_tokens]
         s_phons = [phonetic_code(t) for t in s_tokens]
@@ -554,13 +582,13 @@ class SanctionsMatcher:
             for i in range(m)
         ]
 
-        # Weight each bipartite edge by average IDF weight * similarity (only for sim >= 0.62)
+        # Weight each bipartite edge by average IDF weight * similarity (only for sim >= MIN_PAIR_SIMILARITY)
         weighted_matrix: List[List[float]] = []
         for i in range(m):
             row: List[float] = []
             for j in range(n):
                 _, _, comb = raw_sims[i][j]
-                if comb >= 0.62:
+                if comb >= MIN_PAIR_SIMILARITY:
                     edge_w = 0.5 * (q_weights[i] + s_weights[j]) * comb
                 else:
                     edge_w = 0.0
@@ -589,8 +617,8 @@ class SanctionsMatcher:
                     idf_weight=round(avg_idf, 4),
                 )
             )
-            # Apply slight non-linear sharpening for weak partial matches (< 0.80)
-            effective_sim = comb_sim if comb_sim >= 0.85 else (comb_sim ** 1.35)
+            # Against a full list nearly every rare token has a neighbour at 0.85, so near-misses count little
+            effective_sim = (comb_sim - SIM_FLOOR) / (1 - SIM_FLOOR)
             matched_s_weight += s_weights[j] * effective_sim
             matched_q_weight += q_weights[i] * effective_sim
             matched_s_indices.add(j)
@@ -601,28 +629,28 @@ class SanctionsMatcher:
         sdn_recall = matched_s_weight / total_s_weight if total_s_weight > 0 else 0.0
         query_precision = matched_q_weight / total_q_weight if total_q_weight > 0 else 0.0
 
-        # Combine SDN recall (62%) and Query precision (38%)
-        score = 0.62 * sdn_recall + 0.38 * query_precision
+        # Weighted harmonic mean, so an unmatched distinctive word on either side pulls the score down:
+        # a short listed name inside a longer wire name ("Blue Horizon Maritime" / HORIZON) scores low
+        if sdn_recall and query_precision:
+            score = 1.0 / (QUERY_WEIGHT / query_precision + (1 - QUERY_WEIGHT) / sdn_recall)
+        else:
+            score = 0.0
 
         # Subset boost: if query has >= 2 tokens and ALL query tokens matched strongly (>= 0.90)
-        # AND the highest-IDF token of the SDN name was matched (e.g. omitting a middle patronymic)
-        max_s_idx = max(range(n), key=lambda idx: s_weights[idx])
-        highest_idf_matched = (
-            max_s_idx in matched_s_indices
-            and any(
-                al.sdn_token == s_tokens[max_s_idx] and al.combined_similarity >= 0.85
-                for al in alignments
-            )
+        # AND a distinctive token of the SDN name was matched (e.g. omitting a middle patronymic)
+        top_weight = max(s_weights)
+        highest_idf_matched = any(
+            s_weights[j] >= DISTINCTIVE_RATIO * top_weight and raw_sims[i][j][2] >= 0.85 for i, j, _ in pairs
         )
         if m >= 2 and len(alignments) == m and all(a.combined_similarity >= 0.88 for a in alignments) and highest_idf_matched:
             score = max(score, 0.88 * query_precision + 0.12 * sdn_recall)
 
         # Distinctive-token safeguard:
-        # If the SDN entry's most distinctive (highest-IDF) token was NOT matched at all,
+        # If none of the SDN entry's most distinctive (highest-IDF) tokens was matched,
         # or if only generic low-IDF tokens (< 0.60) matched, cap the score to prevent
         # false positives on "Global Trading LLC" or "Mohammed Ali".
         max_matched_idf = max((s_weights[j] for j in matched_s_indices), default=0.0)
-        if not highest_idf_matched and s_weights[max_s_idx] >= 0.80:
+        if not highest_idf_matched and top_weight >= 0.80:
             score = min(score, 0.58 * score)
         if max_matched_idf <= 0.55 and len(alignments) < max(m, n):
             score = min(score, 0.48)
@@ -778,7 +806,8 @@ class SanctionsMatcher:
             for entry in pool
             if types_compatible(query.entity_type, entry.entity_type)
         ]
-        candidates.sort(key=lambda c: c.final_score, reverse=True)
+        # Ties are common at 1.0 (scores are capped after the DOB/country bonus); the closer name wins
+        candidates.sort(key=lambda c: (c.final_score, c.raw_name_score), reverse=True)
         top_candidates = candidates[:top_k]
 
         best = top_candidates[0] if top_candidates else None

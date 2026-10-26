@@ -1,6 +1,9 @@
+import random
+
 from sancscreen.lists import generate_benchmark_wires, get_default_watchlist
-from sancscreen.matcher import SanctionsMatcher, ScreeningQuery
-from sancscreen.realdata import load_sdn_xml
+from sancscreen.matcher import SanctionsMatcher, ScreeningQuery, _join_split
+from sancscreen.phonetics import normalize_tokens
+from sancscreen.realdata import load_sdn_xml, perturb
 
 SDN_XML = """<?xml version="1.0" standalone="yes"?>
 <sdnList xmlns="https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/XML">
@@ -41,6 +44,9 @@ def test_ofac_loader_and_candidate_index(tmp_path) -> None:
     m = SanctionsMatcher([bout, ryonbong])
     assert m.screen(ScreeningQuery("Q", "Виктор Бут", dob="1967-01-13"))["decision"] == "BLOCK"
     assert m.screen(ScreeningQuery("Q", "Someone Else", identifier="21N 0832689"))["decision"] == "BLOCK"
+    # "victor" and "but" are equally rare; matching either counts as matching the distinctive token
+    res = m.screen(ScreeningQuery("Q", "V. Bout", dob="1967-01-13"))
+    assert res["decision"] == "BLOCK" and res["best_match"].sdn_id == "OFAC-8279"
 
     # The index must reach every decision a full scan reaches on the benchmark list.
     m = SanctionsMatcher(get_default_watchlist())
@@ -50,3 +56,17 @@ def test_ofac_loader_and_candidate_index(tmp_path) -> None:
         assert indexed["decision"] == full["decision"] or w.wire_id == "WIRE-0291"  # see _blocking_keys
         if indexed["decision"] != "CLEAR":
             assert indexed["best_match"].sdn_id == full["best_match"].sdn_id
+
+
+def test_spelled_out_company_forms_and_heldout_variants() -> None:
+    assert normalize_tokens("GAZPROMBANK JOINT STOCK COMPANY") == ["gazprombank"]
+    assert normalize_tokens("OBSHCHESTVO S OGRANICHENNOI OTVETSTVENNOSTYU MEDSTANDART") == ["medstandart"]
+    assert normalize_tokens("Public Joint-Stock Company Rosneft") == ["rosneft"]
+    assert _join_split(["hassan", "nasr", "allah"], ["hassan", "nasrallah"]) == ["hassan", "nasrallah"]
+    rng = random.Random(0)
+    assert perturb("Viktor Anatolijevitch BOUT", "reorder", rng) == "BOUT, Viktor Anatolijevitch"
+    assert perturb("Viktor Anatolijevitch BOUT", "drop_middle", rng) == "Viktor BOUT"
+    assert perturb("Viktor BOUT", "initial", rng) == "V. BOUT"
+    assert perturb("BOUT", "drop_middle", rng) is None
+    typo = perturb("GAZPROMBANK", "typo", rng)
+    assert typo != "Gazprombank" and len(typo) in (10, 11, 12)
