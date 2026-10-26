@@ -806,8 +806,8 @@ class SanctionsMatcher:
             for entry in pool
             if types_compatible(query.entity_type, entry.entity_type)
         ]
-        # Ties are common at 1.0 (scores are capped after the DOB/country bonus); the closer name wins
-        candidates.sort(key=lambda c: (c.final_score, c.raw_name_score), reverse=True)
+        # Ties are common at 1.0 (scores are capped after the DOB/country bonus); the uncapped score breaks them
+        candidates.sort(key=lambda c: (c.final_score, c.raw_name_score + c.secondary_adjustment), reverse=True)
         top_candidates = candidates[:top_k]
 
         best = top_candidates[0] if top_candidates else None
