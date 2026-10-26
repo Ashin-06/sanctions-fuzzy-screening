@@ -35,6 +35,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Set
 
+from defusedxml.ElementTree import parse as safe_parse
+
 from sancscreen.lists import WireTransferCase, generate_benchmark_wires, get_default_watchlist
 from sancscreen.matcher import SanctionsMatcher, ScreeningQuery, SDNEntry
 from sancscreen.phonetics import normalize_tokens, phonetic_code, transliterate
@@ -77,7 +79,7 @@ def _dob(raw: str) -> Optional[str]:
 
 def load_sdn_xml(path: str | Path, weak_akas: bool = False) -> List[SDNEntry]:
     countries = _country_codes()
-    root = ET.parse(path).getroot()
+    root = safe_parse(path).getroot()  # defusedxml: no entity expansion or external fetches
     ns = {"o": root.tag.split("}")[0].strip("{")} if root.tag.startswith("{") else {"o": ""}
     p = "o:" if ns["o"] else ""
 
@@ -264,7 +266,7 @@ def _plain(name: str) -> frozenset:
 
 
 def _split(source_id: str) -> str:
-    return "tune" if hashlib.md5(source_id.encode()).digest()[0] % 2 == 0 else "test"
+    return "tune" if hashlib.md5(source_id.encode(), usedforsecurity=False).digest()[0] % 2 == 0 else "test"
 
 
 def perturb(name: str, kind: str, rng: random.Random) -> Optional[str]:

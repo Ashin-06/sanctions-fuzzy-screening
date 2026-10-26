@@ -1,34 +1,69 @@
 """
 FastAPI REST API for `sancscreen` (Port 8016).
 
-Endpoints:
-- GET  /           : Interactive Sanctions & UBO Screening Web Console (HTML)
-- GET  /health     : Service health check
-- POST /screen     : Screen a SWIFT / cross-border wire party (Name + Phonetic + IDF + DOB/Country + UBO)
-- POST /ubo/check  : Evaluate multi-hop transitive beneficial ownership (OFAC 50% rule & 25% EDD exposure)
-- GET  /watchlist  : Inspect the SDN watchlist, token IDF weights, and UBO corporate graph
-- GET  /bench      : Run the 300-wire benchmark comparing `sancscreen` vs `NaiveLevenshteinMatcher`
+Endpoints (permission in brackets):
+- GET  /                 : Service banner (no browser console ships with this API)
+- GET  /healthz, /readyz : Liveness and readiness (database reachable, watchlist loaded)
+- GET  /metrics          : Prometheus metrics [metrics]
+- POST /screen           : Screen a SWIFT / cross-border wire party; every result is logged [screen]
+- POST /ubo/check        : Evaluate multi-hop transitive beneficial ownership (OFAC 50% rule) [screen]
+- GET  /screenings       : Logged screenings, newest first, by status / decision [read]
+- GET  /screenings/{id}  : One screening with its review history [read]
+- POST /screenings/{id}/review : Clear (false positive) or confirm (true match) a hit, with a note [review]
+- GET  /watchlist        : The loaded watchlist, a page at a time, with IDF weights and UBO entities [read]
+- GET  /bench            : The 300-wire benchmark against the built-in demo list [read]
 
-Set SANCSCREEN_API_KEY to require it in the X-API-Key header on every endpoint except / and /health
-(unset = open, for local use; `python -m sancscreen serve` refuses a non-loopback host without it).
+Callers send an API key (X-API-Key or Authorization: Bearer); its role decides the permissions.
+SANCSCREEN_SDN_XML points at OFAC's SDN.XML; production refuses to start without it. Without it
+(development) the built-in demo list and toy ownership graph are used. Settings: ops.py and
+docs/runbook.md.
 """
 
 from __future__ import annotations
 
-import hmac
+import hashlib
 import os
 from dataclasses import asdict
 from functools import lru_cache
-from pathlib import Path
 from typing import Any, Dict, List, Literal, Optional
 
-from fastapi import Depends, FastAPI, Header, HTTPException, Request
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi import Depends, FastAPI, HTTPException, Query
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel, Field
 
+from sancscreen import db, ops
 from sancscreen.bench import SanctionsScreeningPipeline, run_benchmark
 from sancscreen.matcher import ScreeningQuery
 from sancscreen.phonetics import normalize_tokens, phonetic_skeleton, transliterate
+from sancscreen.store import ScreeningLog
+from sancscreen.ubo import UBOGraphEngine
+
+settings = ops.load_settings()
+ops.setup_logging(settings.log_level)
+SDN_XML = os.environ.get("SANCSCREEN_SDN_XML", "").strip()
+if settings.production and not SDN_XML:
+    raise ops.ConfigError("production needs SANCSCREEN_SDN_XML: the current OFAC SDN.XML; the built-in list is a demo")
+
+
+def _pipeline() -> tuple[SanctionsScreeningPipeline, str]:
+    """The real list (no ownership graph: the built-in one is a toy) or, in development, the demo list."""
+    if not SDN_XML:
+        return SanctionsScreeningPipeline(), "demo"
+    from sancscreen.realdata import load_sdn_xml
+
+    try:
+        data = open(SDN_XML, "rb").read()
+        entries = load_sdn_xml(SDN_XML)
+    except (OSError, ValueError, SyntaxError) as e:  # ParseError is a SyntaxError; defusedxml refusals are ValueErrors
+        raise ops.ConfigError(f"cannot load SANCSCREEN_SDN_XML: {type(e).__name__}") from e
+    if not entries:
+        raise ops.ConfigError("SANCSCREEN_SDN_XML holds no sdnEntry records")
+    return SanctionsScreeningPipeline(watchlist=entries, ubo_engine=UBOGraphEngine()), "sha256:" + hashlib.sha256(data).hexdigest()[:16]
+
+
+_PIPELINE, LIST_VERSION = _pipeline()
+log_store = ScreeningLog(db.connect(settings.database_url))
+ops.log.info("watchlist loaded", extra={"fields": {"entries": len(_PIPELINE.watchlist), "version": LIST_VERSION}})
 
 app = FastAPI(
     title="sancscreen — Cross-Script Phonetic & UBO Graph Sanctions Screening Engine",
@@ -39,27 +74,8 @@ app = FastAPI(
         "OFAC 50%-Rule and Beneficial-Ownership Exposure Graph Engine."
     ),
 )
-
-API_KEY = os.environ.get("SANCSCREEN_API_KEY")
-MAX_BODY_BYTES = 64_000
-
-
-def require_key(x_api_key: str | None = Header(default=None)) -> None:
-    if API_KEY and not hmac.compare_digest(x_api_key or "", API_KEY):
-        raise HTTPException(401, "missing or wrong X-API-Key")
-
-
-@app.middleware("http")
-async def limit_body(request: Request, call_next):
-    if request.method == "POST":
-        length = request.headers.get("content-length", "")
-        if not length.isdigit() or int(length) > MAX_BODY_BYTES:
-            return JSONResponse({"detail": "body missing Content-Length or over 64 KB"}, status_code=413)
-    return await call_next(request)
-
-
-_PIPELINE = SanctionsScreeningPipeline()
-_WEB_CONSOLE_PATH = Path(__file__).resolve().parent.parent / "web" / "console.html"
+ops.install(app, settings, {"database": lambda: log_store.db.connect().close(),
+                            "watchlist": lambda: len(_PIPELINE.watchlist) > 0})
 
 
 class ScreenRequest(BaseModel):
@@ -84,29 +100,18 @@ class UBOCheckRequest(BaseModel):
     )
 
 
+class ReviewRequest(BaseModel):
+    status: Literal["open", "cleared", "confirmed"]
+    note: str = Field(..., min_length=2, max_length=2000)
+
+
 @app.get("/", response_class=HTMLResponse)
 def index() -> HTMLResponse:
-    """Serve the interactive Sanctions & UBO Screening Web Console."""
-    if _WEB_CONSOLE_PATH.exists():
-        return HTMLResponse(content=_WEB_CONSOLE_PATH.read_text(encoding="utf-8"), status_code=200)
-    return HTMLResponse(
-        content="<h1>sancscreen API is running on port 8016</h1>", status_code=200
-    )
+    return HTMLResponse(content="<h1>sancscreen API</h1><p>See /docs for the endpoints.</p>", status_code=200)
 
 
-@app.get("/health")
-def health() -> Dict[str, Any]:
-    return {
-        "status": "ok",
-        "service": "sancscreen",
-        "version": "1.0.0",
-        "watchlist_count": len(_PIPELINE.watchlist),
-        "ubo_graph_nodes": len(_PIPELINE.ubo_engine.nodes),
-    }
-
-
-@app.post("/screen", dependencies=[Depends(require_key)])
-def screen_party(req: ScreenRequest) -> Dict[str, Any]:
+@app.post("/screen")
+def screen_party(req: ScreenRequest, ident: dict = Depends(ops.require("screen"))) -> Dict[str, Any]:
     """Screen a wire transfer party against the SDN watchlist and UBO ownership graph."""
     query = ScreeningQuery(
         query_id=req.query_id,
@@ -117,26 +122,52 @@ def screen_party(req: ScreenRequest) -> Dict[str, Any]:
         identifier=req.identifier if req.identifier else None,
         amount_usd=req.amount_usd,
     )
-    return _PIPELINE.screen_wire(query, top_k=req.top_k)
+    result = _PIPELINE.screen_wire(query, top_k=req.top_k)
+    ops.DECISIONS.labels(decision=result["decision"]).inc()
+    result["screening_id"] = log_store.record(ident["user"] or "demo", result, LIST_VERSION)
+    result["list_version"] = LIST_VERSION
+    return result
 
 
-@app.post("/ubo/check", dependencies=[Depends(require_key)])
+@app.post("/ubo/check", dependencies=[Depends(ops.require("screen"))])
 def check_ubo(req: UBOCheckRequest) -> Dict[str, Any]:
     """Evaluate transitive beneficial ownership (OFAC 50% rule and 25% EDD exposure) for an entity."""
     res = _PIPELINE.ubo_engine.evaluate_entity(req.entity)
     if res is None:
-        raise HTTPException(
-            status_code=404,
-            detail=f"Entity '{req.entity}' not found in corporate UBO registry.",
-        )
+        raise HTTPException(status_code=404, detail="entity not found in the ownership graph")
     return asdict(res)
 
 
-@app.get("/watchlist", dependencies=[Depends(require_key)])
-def get_watchlist() -> Dict[str, Any]:
-    """Return the SDN watchlist with precomputed phonetic skeletons, IDF weights, and UBO entities."""
+@app.get("/screenings", dependencies=[Depends(ops.require("read"))])
+def list_screenings(status: Optional[Literal["open", "cleared", "confirmed"]] = None,
+                    decision: Optional[Literal["BLOCK", "REVIEW", "REVIEW_EDD_25", "CLEAR"]] = None,
+                    limit: int = Query(100, ge=1, le=1000)) -> Dict[str, Any]:
+    rows = log_store.list(status, decision, limit)
+    return {"count": len(rows), "screenings": rows}
+
+
+@app.get("/screenings/{screening_id}", dependencies=[Depends(ops.require("read"))])
+def get_screening(screening_id: str) -> Dict[str, Any]:
+    row = log_store.get(screening_id[:64])
+    if row is None:
+        raise HTTPException(404, "screening not found")
+    return row
+
+
+@app.post("/screenings/{screening_id}/review")
+def review_screening(screening_id: str, body: ReviewRequest, ident: dict = Depends(ops.require("review"))) -> Dict[str, Any]:
+    row = log_store.review(screening_id[:64], ident["user"] or "demo", body.status, body.note)
+    if row is None:
+        raise HTTPException(404, "screening not found")
+    ops.DECISIONS.labels(decision=f"review_{body.status}").inc()
+    return row
+
+
+@app.get("/watchlist", dependencies=[Depends(ops.require("read"))])
+def get_watchlist(offset: int = Query(0, ge=0), limit: int = Query(100, ge=1, le=1000)) -> Dict[str, Any]:
+    """A page of the watchlist with phonetic skeletons and IDF weights, plus the UBO entities."""
     entries_out: List[Dict[str, Any]] = []
-    for entry in _PIPELINE.watchlist:
+    for entry in _PIPELINE.watchlist[offset:offset + limit]:
         toks = normalize_tokens(entry.name, strip_affixes=True)
         entries_out.append(
             {
@@ -151,14 +182,16 @@ def get_watchlist() -> Dict[str, Any]:
 
     ubo_entities = [asdict(r) for r in _PIPELINE.ubo_engine.scan_all_entities()]
     return {
-        "watchlist_count": len(entries_out),
+        "list_version": LIST_VERSION,
+        "watchlist_count": len(_PIPELINE.watchlist),
+        "offset": offset,
         "watchlist": entries_out,
         "ubo_entities_count": len(ubo_entities),
         "ubo_entities": ubo_entities,
     }
 
 
-@app.get("/bench", dependencies=[Depends(require_key)])
+@app.get("/bench", dependencies=[Depends(ops.require("read"))])
 def get_benchmark() -> Dict[str, Any]:
     """Return the 300-wire benchmark (computed once; it takes tens of seconds)."""
     return _cached_benchmark()

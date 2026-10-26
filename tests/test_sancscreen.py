@@ -76,7 +76,7 @@ def test_benchmark_runs() -> None:
 
 def test_api_endpoints() -> None:
     client = TestClient(app)
-    assert client.get("/health").status_code == 200
+    assert client.get("/healthz").status_code == 200
     r = client.post("/screen", json={"name": "Сергей Лавров", "dob": "1950-03-21"})
     assert r.status_code == 200 and r.json()["decision"] == "BLOCK"
     assert client.post("/ubo/check", json={"entity": "UBO-SHELL-01"}).json()["ofac_50_rule_blocked"] is True
@@ -133,12 +133,16 @@ def test_ownership_lookup_ignores_nordic_company_suffixes(pipeline) -> None:
 
 
 def test_api_key_and_input_limits(monkeypatch) -> None:
+    import importlib
+    import json
+
     import sancscreen.api as api
 
-    client = TestClient(app)
-    monkeypatch.setattr(api, "API_KEY", "s3cret")
+    monkeypatch.setenv("SANCSCREEN_API_KEYS", json.dumps({"s3cret": {"user": "pay-hub", "role": "screener"}}))
+    api = importlib.reload(api)
+    client = TestClient(api.app)
     assert client.post("/screen", json={"name": "John Smith"}).status_code == 401
-    assert client.get("/health").status_code == 200
+    assert client.get("/healthz").status_code == 200
     hdr = {"X-API-Key": "s3cret"}
     assert client.post("/screen", json={"name": "John Smith"}, headers=hdr).status_code == 200
     assert client.post("/screen", json={"name": "x" * 201}, headers=hdr).status_code == 422

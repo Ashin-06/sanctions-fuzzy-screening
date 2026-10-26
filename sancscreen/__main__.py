@@ -3,7 +3,8 @@ CLI entrypoint for `sancscreen`.
 
 Usage:
   python -m sancscreen bench
-  python -m sancscreen serve --port 8016
+  python -m sancscreen serve                     # settings: SANCSCREEN_* environment variables
+  python -m sancscreen migrate                   # apply database migrations and exit
   python -m sancscreen screen --name "विक्टर बुट" --country RU --dob 1967-01-13
   python -m sancscreen realdata --sdn SDN.XML     # the real OFAC list -> results/real_data.json
 """
@@ -15,8 +16,6 @@ import json
 import os
 import sys
 from typing import List, Optional
-
-import uvicorn
 
 from sancscreen.bench import (
     SanctionsScreeningPipeline,
@@ -45,8 +44,9 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     # serve subcommand
     serve_p = sub.add_parser("serve", help="Start the FastAPI server and interactive web console")
-    serve_p.add_argument("--host", default="127.0.0.1", help="Bind host (default: 127.0.0.1)")
-    serve_p.add_argument("--port", type=int, default=8016, help="Bind port (default: 8016)")
+    serve_p.add_argument("--host", help="Bind host (default SANCSCREEN_HOST or 127.0.0.1; others need API keys)")
+    serve_p.add_argument("--port", type=int, help="Bind port (default SANCSCREEN_PORT or 8016)")
+    sub.add_parser("migrate", help="Apply database migrations to SANCSCREEN_DATABASE_URL")
 
     # screen subcommand
     screen_p = sub.add_parser("screen", help="Screen a single wire transfer party")
@@ -73,11 +73,28 @@ def main(argv: Optional[List[str]] = None) -> int:
         print(json.dumps({k: v for k, v in res.items() if "examples" not in k}, indent=2, ensure_ascii=False))
         return 0
 
-    if args.command == "serve":
-        if args.host not in ("127.0.0.1", "localhost", "::1") and not os.environ.get("SANCSCREEN_API_KEY"):
-            print("Refusing to listen on a non-loopback address without SANCSCREEN_API_KEY set.", file=sys.stderr)
+    if args.command in ("serve", "migrate"):
+        from sancscreen import db, ops
+
+        for name, val in (("HOST", getattr(args, "host", None)), ("PORT", getattr(args, "port", None))):
+            if val is not None:
+                os.environ[f"SANCSCREEN_{name}"] = str(val)
+        try:
+            settings = ops.load_settings()  # fail here, before uvicorn, with a readable message
+        except ops.ConfigError as e:
+            print(f"configuration error: {e}", file=sys.stderr)
             return 2
-        uvicorn.run("sancscreen.api:app", host=args.host, port=args.port, reload=False)
+        if args.command == "migrate":
+            print(*(db.migrate(db.engine(settings.database_url)) or ["up to date"]), sep="\n")
+            return 0
+        import uvicorn
+
+        ops.setup_logging(settings.log_level)
+        try:
+            uvicorn.run("sancscreen.api:app", host=settings.host, port=settings.port, log_config=None, access_log=False)
+        except ops.ConfigError as e:  # raised while importing the app, e.g. no SANCSCREEN_SDN_XML in production
+            print(f"configuration error: {e}", file=sys.stderr)
+            return 2
         return 0
 
     if args.command == "screen":
