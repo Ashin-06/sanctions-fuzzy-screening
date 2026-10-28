@@ -73,3 +73,7 @@ The held-out set mixes listed names changed by rules (typos, reordering, initial
 - The code has not had an independent security review, and it should run in parallel with the bank's current screening before it is relied on.
 
 See [SECURITY.md](SECURITY.md), [docs/threat-model.md](docs/threat-model.md) and [docs/model-card.md](docs/model-card.md).
+
+## License
+
+MIT. See [LICENSE](LICENSE).
